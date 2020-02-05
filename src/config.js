@@ -1,6 +1,6 @@
 const minimist = require('minimist');
 
-const TIMEOUT = 5 * 60 * 1000; // eslint-disable-line
+const TIMEOUT = 180 * 60 * 1000; // eslint-disable-line
 const MAX_JOBS = 100000;
 const MAX_VEHICLES = 1000;
 const MAX_REQUEST_SIZE = '10240mb';
