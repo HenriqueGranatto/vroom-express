@@ -221,6 +221,7 @@ const execCallback = function(req, res) {
         res.status(HTTP_INTERNALERROR_CODE).send({code, signal});
         break;
     }
+    console.log(solution)
     res.send(solution);
 
     if (fileExists(fileName)) {
