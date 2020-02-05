@@ -22,7 +22,7 @@ const cliArgs = minimist(process.argv.slice(2), {
     maxjobs: MAX_JOBS, // max number of jobs
     maxvehicles: MAX_VEHICLES, // max number of vehicles
     override: true, // allow cl option override (-g only so far)
-    path: '/bin/vroom', // VROOM path (if not in $PATH)
+    path: './bin/vroom', // VROOM path (if not in $PATH)
     port: PORT, // expressjs port
     router: ROUTER, // routing backend (osrm, libosrm or ors)
     timeout: TIMEOUT // milli-seconds.
