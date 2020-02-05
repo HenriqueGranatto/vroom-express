@@ -145,6 +145,7 @@ if (args.router != 'libosrm') {
     if ('host' in profile && 'port' in profile) {
       options.push('-a', profileName + ':' + profile.host);
       options.push('-p', profileName + ':' + profile.port);
+      options.push('-t 16');
     } else {
       console.error(
         "Incomplete configuration: profile '" +
