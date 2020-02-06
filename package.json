@@ -13,7 +13,8 @@
     "url": "https://github.com/HenriqueGranatto/vroom-express"
   },
   "scripts": {
-    "start": "nodemon src/index.js"
+    "start": "node src/index.js",
+    "start dev": "nodemon src/index.js"
   },
   "dependencies": {
     "body-parser": "^1.15.1",
