@@ -34,17 +34,20 @@ exports.sendToVroom = async (request, response) =>
             password : process.env.VROOM_SSH_PASSWORD
         })
         .then(function() {
-            ssh.execCommand(`cd / && echo '${request.body}' > /vroom/${timeStart}`, { cwd:'/' }).then(function(result) {
-                if(result.stderr) throw result.stderr
+            ssh.execCommand(`cd / && echo '${JSON.stringify(request.body)}' > /vroom/${timeStart}`, { cwd:'/' }).then(function(result) {
+                if(result.stderr) 
+                {
+                    console.log(`${result.stderr}`)
+                }
             })
 
-            ssh.exec(`${process.env.VROOM_PATH}`, [`${vroomCommand}`], {
+            ssh.exec(`${process.env.VROOM_PATH} ${vroomCommand}`, [], {
                 cwd: '/',
-                onStdout(response) {
-                    console.log(response.toString('utf8'))
+                onStdout(solution) {
+                    response.status(200).send({timeRequest: helper.timeRequest(timeStart), solution: JSON.parse(`${solution}`), request: request.body})
                 },
                 onStderr(error) {
-                    throw error
+                    console.log(`${error}`)
                 },
             })
         }) 

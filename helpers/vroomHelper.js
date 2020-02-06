@@ -47,7 +47,7 @@ exports.createVroomCommand = (request, filename) =>
             vroomCommand += ' -g ';   
         }
 
-        vroomCommand += ` -i /vroom/${filename} ` 
+        vroomCommand += ` -i ./vroom/${filename} ` 
         
         return vroomCommand
     }
