@@ -27,12 +27,6 @@ exports.verifyRequestData = (request, filters) =>
     }
 }
 
-exports.insertInDB = async (table, data) =>
-{
-    const db = await app.database()
-    return db.get(table).push(data).write()
-}
-
 exports.selectInDB = async (table, filter) =>
 {
     const db = await app.database()
@@ -40,6 +34,12 @@ exports.selectInDB = async (table, filter) =>
     if(Object.entries(filter).length != 0) return db.get(table).find(filter).value()
 
     return db.get(table).value()
+}
+
+exports.insertInDB = async (table, data) =>
+{
+    const db = await app.database()
+    return db.get(table).push(data).write()
 }
 
 exports.updateInDB = async (table, filter, data) =>
