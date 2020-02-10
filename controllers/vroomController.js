@@ -6,11 +6,10 @@ const vroomHelper = require('../helpers/vroomHelper')
 
 exports.sendToVroom = async (request, response) =>
 {
+    const timeStart = Date.now()
+
     try
-    {        
-        let vroomCommand = ''
-        let timeStart = Date.now()
-        
+    {                
         const verifyRequestData = vroomHelper.verifyRequestData(request.body)
 
         if(verifyRequestData.status == 400) 
@@ -19,7 +18,7 @@ exports.sendToVroom = async (request, response) =>
             return
         }
 
-        vroomCommand = vroomHelper.createVroomCommand(request, timeStart)
+        const vroomCommand = vroomHelper.createVroomCommand(request, timeStart)
         
         if(typeof vroomCommand != 'string')
         {
