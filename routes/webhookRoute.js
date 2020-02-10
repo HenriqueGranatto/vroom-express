@@ -5,5 +5,6 @@ const route = express.Router()
 const webhookRoute = require('../controllers/webhookController')
 
 route.post('/', webhookRoute.insert)
+route.put('/', webhookRoute.update)
 
 module.exports = route
