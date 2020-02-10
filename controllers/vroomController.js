@@ -50,7 +50,7 @@ exports.sendToVroom = async (request, response) =>
                     return
                 },
                 onStderr(error) {
-                    response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: `${result.stderr}`, request: request.body})
+                    response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: `${error}`, request: request.body})
                     return
                 },
             })
