@@ -9,12 +9,22 @@ const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 
-const db = new JsonDB(new Config("vroom", true, false, '/'));
-
 const vroomRoute = require('./routes/vroomRoute')
 const webhookRoute = require('./routes/webhookRoute')
 
 app.use('/vroom', vroomRoute)
 app.use('/webhook', webhookRoute)
 
-module.exports = {app, db}
+exports.app = app
+exports.database = async () =>
+{
+    const low = require('lowdb')
+    const FileSync = require('lowdb/adapters/FileSync')
+    
+    const adapter = new FileSync('db.json')
+    const db = await low(adapter)
+    
+    db.defaults({ subscribers: [] }).write()
+
+    return db
+}

@@ -1,0 +1,18 @@
+{
+  "subscribers": [
+    {
+      "subscriber": 92,
+      "event": "all",
+      "method": "POST",
+      "url": "localhost:3000/test",
+      "authentication": null
+    },
+    {
+      "subscriber": 92,
+      "event": "all",
+      "method": "POST",
+      "url": "localhost:3000/test",
+      "authentication": null
+    }
+  ]
+}

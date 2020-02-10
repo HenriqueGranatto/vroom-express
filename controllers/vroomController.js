@@ -16,6 +16,7 @@ exports.sendToVroom = async (request, response) =>
         if(requestValidate.status == 400) 
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: requestValidate.message, request: request.body})
+            return
         }
 
         vroomCommand = vroomHelper.createVroomCommand(request, timeStart)
@@ -23,6 +24,7 @@ exports.sendToVroom = async (request, response) =>
         if(typeof vroomCommand != 'string')
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: vroomCommand.message, request: request.body})
+            return
         }
  
         const ssh = new node_ssh()
@@ -38,6 +40,7 @@ exports.sendToVroom = async (request, response) =>
                 if(result.stderr) 
                 {
                     response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: `${result.stderr}`, request: request.body})
+                    return
                 }
             })
 
@@ -45,9 +48,11 @@ exports.sendToVroom = async (request, response) =>
                 cwd: '/',
                 onStdout(solution) {
                     response.status(200).send({timeRequest: helper.timeRequest(timeStart), solution: JSON.parse(`${solution}`), request: request.body})
+                    return
                 },
                 onStderr(error) {
                     response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: `${result.stderr}`, request: request.body})
+                    return
                 },
             })
         }) 
@@ -55,5 +60,6 @@ exports.sendToVroom = async (request, response) =>
     catch(e)
     {
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: e.toString(), request: request.body})
+        return
     }
 }
