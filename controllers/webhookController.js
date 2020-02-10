@@ -10,15 +10,22 @@ exports.insert = async (request, response) =>
 
     try
     {        
-        const requestValidate = webhookHelper.verifyRequestData(request.body)
+        const verifyRequestData = webhookHelper.verifyRequestData(request.body)
 
-        if(requestValidate.status == 400) 
+        if(verifyRequestData.status == 400) 
         {
             response.status(400).send({timeRequest: helper.timeRequest(timeStart), message: requestValidate.message, request: request.body})
             return
         }
+
+        const verifyIfWebhookExists = await webhookHelper.verifyIfWebhookExists(request.body)
         
-        
+        if(verifyIfWebhookExists.status == 400 )
+        {
+            response.status(400).send({timeRequest: helper.timeRequest(timeStart), message: verifyIfWebhookExists.message, request: request.body})
+            return
+        }
+
         const db = await app.database()
 
         db.get('subscribers').push({
@@ -26,7 +33,7 @@ exports.insert = async (request, response) =>
             event: request.body.event || "all",
             method: request.body.method || "POST", 
             url: request.body.url, 
-            authentication: request.token || null,
+            authentication: request.body.authentication || null,
         }).write()
 
         response.status(200).send({status:200, timeRequest: helper.timeRequest(timeStart), message: "Webhook URL saved with success", request: request.body})
