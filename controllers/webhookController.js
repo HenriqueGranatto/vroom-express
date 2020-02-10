@@ -14,7 +14,7 @@ exports.insert = async (request, response) =>
 
         if(verifyRequestData.status == 400) 
         {
-            response.status(400).send({timeRequest: helper.timeRequest(timeStart), message: requestValidate.message, request: request.body})
+            response.status(400).send({timeRequest: helper.timeRequest(timeStart), message: verifyRequestData.message, request: request.body})
             return
         }
 

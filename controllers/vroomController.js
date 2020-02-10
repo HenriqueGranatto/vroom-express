@@ -11,11 +11,11 @@ exports.sendToVroom = async (request, response) =>
         let vroomCommand = ''
         let timeStart = Date.now()
         
-        const requestValidate = vroomHelper.verifyRequestData(request.body)
+        const verifyRequestData = vroomHelper.verifyRequestData(request.body)
 
-        if(requestValidate.status == 400) 
+        if(verifyRequestData.status == 400) 
         {
-            response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: requestValidate.message, request: request.body})
+            response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: verifyRequestData.message, request: request.body})
             return
         }
 
