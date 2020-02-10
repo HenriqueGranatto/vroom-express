@@ -44,6 +44,22 @@ exports.insert = async (request, response) =>
     }
 }
 
+exports.select = async (request, response) =>
+{
+    const timeStart = Date.now()
+
+    try
+    {        
+        const result = await helper.selectInDB("subscribers", request.body)
+        response.status(200).send({status:200, timeRequest: helper.timeRequest(timeStart), message: result, request: request.body})
+    }
+    catch(e)
+    {
+        response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: e.toString(), request: request.body})
+        return
+    }
+}
+
 exports.update = async (request, response) =>
 {
     const timeStart = Date.now()

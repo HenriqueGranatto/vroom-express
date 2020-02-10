@@ -33,6 +33,15 @@ exports.insertInDB = async (table, data) =>
     return db.get(table).push(data).write()
 }
 
+exports.selectInDB = async (table, filter) =>
+{
+    const db = await app.database()
+
+    if(Object.entries(filter).length != 0) return db.get(table).find(filter).value()
+
+    return db.get(table).value()
+}
+
 exports.updateInDB = async (table, filter, data) =>
 {
     const db = await app.database()
