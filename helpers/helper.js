@@ -30,8 +30,10 @@ exports.verifyRequestData = (request, filters) =>
 exports.selectInDB = async (table, filter) =>
 {
     const db = await app.database()
+    const event = filter.event
+    delete filter.event
 
-    if(Object.entries(filter).length != 0) return db.get(table).find(filter).value()
+    if(Object.entries(filter).length != 0) return db.get(table).filter(filter).filter(obj => event.indexOf(obj.event) != -1 ).value()
 
     return db.get(table).value()
 }

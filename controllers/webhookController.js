@@ -26,7 +26,7 @@ exports.insert = async (request, response) =>
             return
         }
 
-        if(eventList.indexOf(request.body.event) == -1 || request.body.event != "all")
+        if(eventList.indexOf(request.body.event) == -1 && request.body.event != "all")
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), message: "Event type not allowed", request: request.body})
             return
@@ -58,6 +58,7 @@ exports.select = async (request, response) =>
     try
     {        
         const result = await helper.selectInDB("subscribers", request.body)
+        console.log(result)
         response.status(200).send({status:200, timeRequest: helper.timeRequest(timeStart), message: result, request: request.body})
     }
     catch(e)
@@ -89,7 +90,7 @@ exports.update = async (request, response) =>
             return
         }
 
-        if(eventList.indexOf(request.body.event) == -1 || request.body.event != "all")
+        if(eventList.indexOf(request.body.event) == -1 && request.body.event != "all")
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), message: "Event type not allowed", request: request.body})
             return
