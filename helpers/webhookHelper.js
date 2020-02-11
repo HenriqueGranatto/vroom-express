@@ -28,9 +28,9 @@ exports.verifyIfWebhookExists = async (webhookData) =>
     }
 }
 
-exports.sendToObserver = (request) =>
+exports.sendToObserver = async (request) =>
 {
-    const config  = helper.selectInDB("subscriber", {subscribers: request.subscriber, event: request.event})
+    const config = await helper.selectInDB("subscribers", {subscriber: request.subscriber, event: request.event})
 
     axios({
         method: config.method,
