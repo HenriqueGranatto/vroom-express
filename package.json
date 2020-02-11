@@ -13,7 +13,7 @@
     "url": "https://github.com/HenriqueGranatto/vroom-express"
   },
   "scripts": {
-    "start": "nodemon bin/server.js"
+    "start": "node bin/server.js"
   },
   "dependencies": {
     "axios": "^0.19.2",
