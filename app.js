@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({extended: false, limit: `${process.env.REQUEST_LI
 const vroomRoute = require('./routes/vroomRoute')
 const webhookRoute = require('./routes/webhookRoute')
 
-app.use('/vroom', vroomRoute)
+app.use('/route', vroomRoute)
 app.use('/webhook', webhookRoute)
 app.use('/teste', (request =>{
     console.log(request.body)

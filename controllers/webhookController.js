@@ -2,6 +2,7 @@
 
 const helper = require('../helpers/helper')
 const webhookHelper = require('../helpers/webhookHelper')
+const eventList = ["all", "route"]
 
 exports.insert = async (request, response) =>
 {
@@ -22,6 +23,12 @@ exports.insert = async (request, response) =>
         if(verifyIfWebhookExists.status == 200 )
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), message: verifyIfWebhookExists.message, request: request.body})
+            return
+        }
+
+        if(eventList.indexOf(request.body.event) == -1 || request.body.event != "all")
+        {
+            response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), message: "Event type not allowed", request: request.body})
             return
         }
 
@@ -79,6 +86,12 @@ exports.update = async (request, response) =>
         if(verifyIfWebhookExists.status == 400)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), message: "Webhok URL not exists", request: request.body})
+            return
+        }
+
+        if(eventList.indexOf(request.body.event) == -1 || request.body.event != "all")
+        {
+            response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), message: "Event type not allowed", request: request.body})
             return
         }
 
