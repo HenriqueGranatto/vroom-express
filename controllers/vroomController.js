@@ -29,6 +29,7 @@ exports.sendToVroom = async (request, response) =>
             return
         }
  
+        const solution = ""
         const ssh = new node_ssh()
          
         ssh.connect({
@@ -41,27 +42,33 @@ exports.sendToVroom = async (request, response) =>
             ssh.execCommand(`cd / && echo '${JSON.stringify(request.body)}' > /vroom/${timeStart}`, { cwd:'/' }).then(function(result) {
                 if(result.stderr) 
                 {
-                    webhookHelper.sendToObserver({subscriber: 112, event: "all", data: {status: 400, timeRequest: helper.timeRequest(timeStart), error: `${result.stderr}`, request: request.body}})
+                    webhookHelper.sendToObserver({subscriber: 112, event: "all", data: {status: 400, timeRequest: helper.timeRequest(timeStart), error: `It was not possible send to rounting`, request: request.body}})
                     return
                 }
+                else
+                {
+                    ssh.exec(`${process.env.VROOM_PATH} ${vroomCommand}`, [], {
+                        cwd: '/',
+                        onStdout(solution) {    
+        
+                        },
+                        onStderr(error) {
+                            webhookHelper.sendToObserver({subscriber: 112, event: "all", data: {status: 400, timeRequest: helper.timeRequest(timeStart), error: `It was not possible rounting`, request: request.body}})
+                            return
+                        },
+                    }).then(solution => {
+                        webhookHelper.sendToObserver({subscriber: 112, event: "all", data: {status: 200, timeRequest: helper.timeRequest(timeStart), solution: JSON.parse(`${solution}`), request: request.body}})
+                        return
+                    })
+                }
+            }).catch((error) => {
+                webhookHelper.sendToObserver({subscriber: 112, event: "all", data: {status: 400, timeRequest: helper.timeRequest(timeStart), error: `It was not send possible`, request: request.body}})
+                return
             })
-
-            ssh.exec(`${process.env.VROOM_PATH} ${vroomCommand}`, [], {
-                cwd: '/',
-                onStdout(solution) {
-                    webhookHelper.sendToObserver({subscriber: 112, event: "all", data: {status: 200, timeRequest: helper.timeRequest(timeStart), solution: JSON.parse(`${solution}`), request: request.body}})
-                    return
-                },
-                onStderr(error) {
-                    webhookHelper.sendToObserver({subscriber: 112, event: "all", data: {status: 400, timeRequest: helper.timeRequest(timeStart), error: `${error}`, request: request.body}})
-                    return
-                },
-            })
-        }) 
+        })        
     }
     catch(e)
     {
-        webhookHelper.sendToObserver({subscriber: 112, event: "all", data: {status: 400, timeRequest: helper.timeRequest(timeStart), error: e.toString(), request: request.body}})
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: e.toString(), request: request.body})
         return
     }
