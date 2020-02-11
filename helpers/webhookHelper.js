@@ -1,6 +1,8 @@
 'use strict'
 
 const app = require('../app')
+const axios = require('axios').default
+const helper = require('../helpers/helper')
 
 exports.verifyIfWebhookExists = async (webhookData) => 
 {
@@ -24,4 +26,15 @@ exports.verifyIfWebhookExists = async (webhookData) =>
     {
         throw e
     }
+}
+
+exports.sendToObserver = (request) =>
+{
+    const config  = helper.selectInDB("subscriber", {subscribers: request.subscriber, event: request.event})
+
+    axios({
+        method: config.method,
+        url: config.url,
+        data: request.data
+    })
 }

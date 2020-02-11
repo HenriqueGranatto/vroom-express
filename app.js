@@ -14,6 +14,9 @@ const webhookRoute = require('./routes/webhookRoute')
 
 app.use('/vroom', vroomRoute)
 app.use('/webhook', webhookRoute)
+app.use('/teste', (request =>{
+    console.log(request.body)
+}))
 
 exports.app = app
 exports.database = async () =>

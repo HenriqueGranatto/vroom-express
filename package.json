@@ -16,6 +16,7 @@
     "start": "nodemon bin/server.js"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "body-parser": "^1.15.1",
     "dotenv": "^8.2.0",
     "express": "^4.13.4",

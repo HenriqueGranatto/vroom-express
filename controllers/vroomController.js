@@ -3,6 +3,7 @@
 const node_ssh = require('node-ssh')
 const helper = require('../helpers/helper')
 const vroomHelper = require('../helpers/vroomHelper')
+const webhookHelper = require('../helpers/webhookHelper')
 
 exports.sendToVroom = async (request, response) =>
 {
@@ -18,11 +19,13 @@ exports.sendToVroom = async (request, response) =>
             return
         }
 
+        response.status(200).send({status: 200, timeRequest: helper.timeRequest(timeStart), message: "Route in processing"})
+
         const vroomCommand = vroomHelper.createVroomCommand(request, timeStart)
         
         if(typeof vroomCommand != 'string')
         {
-            response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: vroomCommand.message, request: request.body})
+            webhookHelper.sendToObserver({subscriber: 112, event: "all", data: {status: 400, timeRequest: helper.timeRequest(timeStart), error: vroomCommand.message, request: request.body}})
             return
         }
  
@@ -38,7 +41,7 @@ exports.sendToVroom = async (request, response) =>
             ssh.execCommand(`cd / && echo '${JSON.stringify(request.body)}' > /vroom/${timeStart}`, { cwd:'/' }).then(function(result) {
                 if(result.stderr) 
                 {
-                    response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: `${result.stderr}`, request: request.body})
+                    webhookHelper.sendToObserver({subscriber: 112, event: "all", data: {status: 400, timeRequest: helper.timeRequest(timeStart), error: `${result.stderr}`, request: request.body}})
                     return
                 }
             })
@@ -46,11 +49,11 @@ exports.sendToVroom = async (request, response) =>
             ssh.exec(`${process.env.VROOM_PATH} ${vroomCommand}`, [], {
                 cwd: '/',
                 onStdout(solution) {
-                    response.status(200).send({timeRequest: helper.timeRequest(timeStart), solution: JSON.parse(`${solution}`), request: request.body})
+                    webhookHelper.sendToObserver({subscriber: 112, event: "all", data: {status: 200, timeRequest: helper.timeRequest(timeStart), solution: JSON.parse(`${solution}`), request: request.body}})
                     return
                 },
                 onStderr(error) {
-                    response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: `${error}`, request: request.body})
+                    webhookHelper.sendToObserver({subscriber: 112, event: "all", data: {status: 400, timeRequest: helper.timeRequest(timeStart), error: `${error}`, request: request.body}})
                     return
                 },
             })
@@ -58,6 +61,7 @@ exports.sendToVroom = async (request, response) =>
     }
     catch(e)
     {
+        webhookHelper.sendToObserver({subscriber: 112, event: "all", data: {status: 400, timeRequest: helper.timeRequest(timeStart), error: e.toString(), request: request.body}})
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: e.toString(), request: request.body})
         return
     }
