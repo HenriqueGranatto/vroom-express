@@ -6,8 +6,8 @@ require('dotenv').config()
 
 const app = express()
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json({limit: process.env.REQUEST_LIMIT}))
+app.use(bodyParser.urlencoded({extended: false, limit: process.env.REQUEST_LIMIT}))
 
 const vroomRoute = require('./routes/vroomRoute')
 const webhookRoute = require('./routes/webhookRoute')
