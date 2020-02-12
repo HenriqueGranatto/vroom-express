@@ -33,7 +33,7 @@ exports.insert = async (request, response) =>
         }
 
         helper.insertInDB("subscribers", {
-            subscriber: request.body.subscriber, 
+            subscriber: request.body.subscriber.toString(), 
             event: request.body.event || "all",
             method: request.body.method || "POST", 
             url: request.body.url, 
