@@ -32,9 +32,11 @@ exports.sendToObserver = async (request) =>
 {
     const config = await helper.selectInDB("subscribers", {subscriber: request.subscriber, event: request.event})
 
-    axios({
-        method: config.method,
-        url: config.url,
-        data: request.data
+    config.map((obj) => {
+        axios({
+            method: obj.config.method,
+            url:    obj.config.url,
+            data:   obj.request.data
+        })
     })
 }
