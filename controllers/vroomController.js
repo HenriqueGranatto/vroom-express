@@ -19,7 +19,7 @@ exports.sendToVroom = async (request, response) =>
             return
         }
 
-        response.status(200).send({status: 200, timeRequest: helper.timeRequest(timeStart), message: "Route in processing"})
+        response.status(200).send({status: 200, timeRequest: helper.timeRequest(timeStart), message: "Routing in processing"})
 
         const vroomCommand = vroomHelper.createVroomCommand(request, timeStart)
         

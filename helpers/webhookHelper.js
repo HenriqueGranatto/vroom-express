@@ -34,9 +34,9 @@ exports.sendToObserver = async (request) =>
 
     config.map((obj) => {
         axios({
-            method: obj.config.method,
-            url:    obj.config.url,
-            data:   obj.request.data
+            method: obj.method,
+            url:    obj.url,
+            data:   request.data
         })
     })
 }
