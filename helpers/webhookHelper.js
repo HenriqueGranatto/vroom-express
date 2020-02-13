@@ -4,6 +4,8 @@ const app = require('../app')
 const axios = require('axios').default
 const helper = require('../helpers/helper')
 
+const eventList = ["all", "route"]
+
 exports.verifyIfWebhookExists = async (webhookData) => 
 {
     try
@@ -28,15 +30,39 @@ exports.verifyIfWebhookExists = async (webhookData) =>
     }
 }
 
+exports.verifyIfEventExists = (event) =>
+{
+    try
+    {
+        if(eventList.indexOf(event) == -1 && event != "all")
+        {
+            return {status: 400, message: "Event type not allowed"}
+        }
+        
+        return {status: 200}
+    }
+    catch(e)
+    {
+        throw e
+    }
+}
+
 exports.sendToObserver = async (request) =>
 {
-    const config = await helper.selectInDB("subscribers", {subscriber: request.subscriber, event: request.event})
+    try
+    {
+        const config = await helper.selectInDB("subscribers", {subscriber: request.subscriber, event: request.event})
 
-    config.map((obj) => {
-        axios({
-            method: obj.method,
-            url:    obj.url,
-            data:   request.data
+        config.map((obj) => {
+            axios({
+                method: obj.method,
+                url:    obj.url,
+                data:   request.data
+            })
         })
-    })
+    }
+    catch(e)
+    {
+        throw e
+    }
 }

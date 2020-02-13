@@ -2,7 +2,7 @@
 
 const app = require('../app')
 
-exports.timeRequest = (timeStart) => parseFloat((Date.now() - timeStart) / 1000).toFixed(2)
+exports.timeRequest = () => parseFloat((Date.now() - process.env.REQUEST_START) / 1000).toFixed(2)
 
 exports.verifyRequestData = (request, filters) => 
 {
@@ -17,15 +17,18 @@ exports.verifyRequestData = (request, filters) =>
             }
         })
 
-        if(errors.length > 0) return {status: 400, errors: errors}
+        if(errors.length > 0)
+        {
+            return {status: 400, errors: errors}
+        }
 
-        return {status: 200}
+        return {status: 200, errors: errors}
     }
     catch(e)
     {
         throw e
     }
-}
+} 
 
 exports.selectInDB = async (table, filter) =>
 {
@@ -33,7 +36,10 @@ exports.selectInDB = async (table, filter) =>
     const event = filter.event
     delete filter.event
 
-    if(Object.entries(filter).length != 0) return db.get(table).filter(filter).filter(obj => event.indexOf(obj.event) != -1 ).value()
+    if(Object.entries(filter).length != 0)
+    {
+        return db.get(table).filter(filter).filter(obj => event.indexOf(obj.event) != -1 ).value()
+    } 
 
     return db.get(table).value()
 }
