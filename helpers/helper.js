@@ -33,15 +33,35 @@ exports.verifyRequestData = (request, filters) =>
 exports.selectInDB = async (table, filter) =>
 {
     const db = await app.database()
-    const event = filter.event
-    delete filter.event
 
-    if(Object.entries(filter).length != 0)
-    {
-        return db.get(table).filter(filter).filter(obj => event.indexOf(obj.event) != -1 ).value()
-    } 
+    if(Object.entries(filter).length == 0){ return db.get(table).value() }
+    if(Object.entries(filter).length == 1){ return db.get(table).filter({token: filter.token}).value() }
 
-    return db.get(table).value()
+    let response = []
+    let token = filter.token
+
+    delete filter.token
+    filter = Object.entries(filter)
+    table = db.get(table).filter({token: token}).value()
+
+    table.map((data) => {
+        let dataMatch = false
+
+        filter.map((attribute) => {
+            if(Array.isArray(attribute[1]) == true)
+            {
+                dataMatch = (attribute[1].indexOf(data[attribute[0]]) > -1) ? true : false
+            }
+            else
+            {
+                dataMatch = (data[attribute[0]] == attribute[1]) ? true : false
+            }
+        })
+
+        if(dataMatch == true) { response.push(data) }
+    })
+
+    return response
 }
 
 exports.insertInDB = async (table, data) =>

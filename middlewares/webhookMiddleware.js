@@ -23,6 +23,7 @@ exports.select = async (request, response, next) =>
     }
     catch(e)
     {
+        console.log(e)
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), error: "Cannot possible process the request"})
         helper.insertInDB("subscribersLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
         return
@@ -34,9 +35,9 @@ exports.insert = async (request, response, next) =>
     try
     {        
         const verifyRequestParamsData = helper.verifyRequestData(request.params, ["token"])
-        const verifyIfWebhookExists = await webhookHelper.verifyIfWebhookExists(request.body)
         const verifyRequestBodyData = helper.verifyRequestData(request.body, ["event", "url"])
         const verifyIfEventExists = await webhookHelper.verifyIfEventExists(request.body.event)
+        const verifyIfWebhookExists = await webhookHelper.verifyIfWebhookExists({token: request.params.token, event: request.body.event})
 
         if(verifyRequestParamsData.status == 400)
         {

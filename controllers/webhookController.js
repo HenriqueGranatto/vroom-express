@@ -6,11 +6,12 @@ exports.select = async (request, response) =>
 {
     try
     {        
-        const result = await helper.selectInDB("subscribers", {token: request.params.token})
+        const result = await helper.selectInDB("subscribers", Object.assign({token: request.params.token}, request.body))
         response.status(200).send({status:200, timeRequest: helper.timeRequest(), message: result})
     }
     catch(e)
     {
+        console.log(e)
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), error: "Cannot possible process the request"})
         helper.insertInDB("subscribersLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
         return

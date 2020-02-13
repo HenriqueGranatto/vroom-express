@@ -13,7 +13,7 @@ exports.verifyIfWebhookExists = async (webhookData) =>
         const db = await app.database()
 
         const result = db.get('subscribers').find({
-            subscriber: webhookData.subscriber, 
+            token: webhookData.token, 
             event: webhookData.event,
         }).value()
 
