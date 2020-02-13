@@ -65,8 +65,8 @@ exports.delete = async (request, response) =>
 {
     try
     {        
-        helper.deleteInDB("subscribers", { subscriber: request.body.subscriber, event: request.body.event })
-        helper.insertInDB("subscribersLog", {event: "delete", subscriber: request.body.subscriber, date: (new Date).toLocaleString(), request: request.body})
+        helper.deleteInDB("subscribers", { token: request.params.token, event: request.body.event })
+        helper.insertInDB("subscribersLog", {event: "delete", token: request.params.token, date: (new Date).toLocaleString(), request: request.body})
 
         response.status(200).send({status:200, timeRequest: helper.timeRequest(), message: "Notification URL deleted with success"})
     }
