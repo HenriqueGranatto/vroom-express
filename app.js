@@ -14,9 +14,6 @@ const webhookRoute = require('./routes/webhookRoute')
 
 app.use('/route', vroomRoute)
 app.use('/notification', webhookRoute)
-app.use('/teste', (request =>{
-    console.log(request.body)
-}))
 
 exports.app = app
 exports.database = async () =>
