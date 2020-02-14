@@ -34,8 +34,8 @@ exports.insert = async (request, response, next) =>
     try
     {        
         const verifyRequestParamsData = helper.verifyRequestData(request.params, ["token"])
-        const verifyRequestBodyData = helper.verifyRequestData(request.body, ["event", "method", "url"])
         const verifyIfEventExists = await webhookHelper.verifyIfEventExists(request.body.event)
+        const verifyRequestBodyData = helper.verifyRequestData(request.body, ["event", "method", "url"])
         const verifyIfWebhookExists = await webhookHelper.verifyIfWebhookExists({token: request.params.token, event: request.body.event})
 
         if(verifyRequestParamsData.status == 400)
@@ -80,9 +80,10 @@ exports.update = async (request, response, next) =>
 {
     try
     {        
+        const verifyRequestBodyData = helper.verifyRequestData(request.body, ["event"])
         const verifyRequestParamsData = helper.verifyRequestData(request.params, ["token"])
         const verifyIfWebhookExists = await webhookHelper.verifyIfWebhookExists({token: request.params.token, event: request.body.event})
-        const verifyRequestBodyData = helper.verifyRequestData(request.body, ["event"])
+
 
         if(verifyRequestParamsData.status == 400)
         {
@@ -119,9 +120,9 @@ exports.delete = async (request, response, next) =>
 {
     try
     {        
-        const verifyRequestParamsData = helper.verifyRequestData(request.params, ["token"])
-        const verifyIfWebhookExists = await webhookHelper.verifyIfWebhookExists(request.body)
         const verifyRequestBodyData = helper.verifyRequestData(request.body, ["event"])
+        const verifyRequestParamsData = helper.verifyRequestData(request.params, ["token"])
+        const verifyIfWebhookExists = await webhookHelper.verifyIfWebhookExists({token: request.params.token, event: request.body.event})
 
         if(verifyRequestParamsData.status == 400)
         {

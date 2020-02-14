@@ -10,11 +10,9 @@ exports.verifyIfWebhookExists = async (webhookData) =>
 {
     try
     {
-        const db = await app.database()
+        const result = await helper.selectInDB("subscribers", webhookData)
 
-        const result = await helper.selectInDB("subscribers", {token: webhookData.token, event: webhookData.event})
-
-        if(typeof result == 'object')
+        if(typeof result == 'object' && result.length > 0)
         {
             return {status: 200, message: 'There is already a registered webhook for this event'}
         }
