@@ -51,8 +51,9 @@ exports.sendToVroom = async (request, response) =>
                             return
                         },
                     }).then(solution => {
+                        solutionLINK = helper.saveInS3(JSON.stringify(JSON.parse(`${solution}`)))
                         webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 200, timeRequest: helper.timeRequest(), solution: JSON.parse(`${solution}`)}})
-                        helper.insertInDB("notificationsLog", {process: process.env.REQUEST_START, event: "solution", token: request.params.token, date: (new Date).toLocaleString(), message: JSON.parse(`${solution}`)})
+                        helper.insertInDB("notificationsLog", {process: process.env.REQUEST_START, event: "solution", token: request.params.token, date: (new Date).toLocaleString(), message: solutionLINK})
 
                         return
                     })

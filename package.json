@@ -16,6 +16,7 @@
     "start": "node bin/server.js"
   },
   "dependencies": {
+    "aws-sdk": "^2.619.0",
     "axios": "^0.19.2",
     "body-parser": "^1.15.1",
     "dotenv": "^8.2.0",
