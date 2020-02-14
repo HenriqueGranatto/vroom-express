@@ -40,10 +40,10 @@ exports.saveInS3 = async (file) =>
     
     let response = null
 
-    await S3.upload(uploadParams, (error, data) => {
+    S3.upload(uploadParams,  (error, data) => {
         if(!error)
         {
-            response = {status: 200, link: data}
+            response = {status: 200, link: data.Location}
         }
         else
         {
