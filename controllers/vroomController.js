@@ -11,12 +11,14 @@ exports.sendToVroom = async (request, response) =>
     try
     {  
         response.status(200).send({status: 200, timeRequest: helper.timeRequest(), message: "Routing in processing"})
+        helper.insertInDB("notificationsLog", {process: process.env.REQUEST_START, event: "receive", token: request.params.token, date: (new Date).toLocaleString(), message: "Routing in processing"})
 
         const vroomCommand = vroomHelper.createVroomCommand(request)
         
         if(typeof vroomCommand != 'string')
         {
             webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), error: vroomCommand.message}})
+            helper.insertInDB("notificationsLog", {process: process.env.REQUEST_START, event: "error", token: request.params.token, date: (new Date).toLocaleString(), message: vroomCommand.message})
             return
         }
  
@@ -33,6 +35,7 @@ exports.sendToVroom = async (request, response) =>
                 if(result.stderr) 
                 {
                     webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), error: `It was not possible send to rounting`}})
+                    helper.insertInDB("notificationsLog", {process: process.env.REQUEST_START, event: "error", token: request.params.token, date: (new Date).toLocaleString(), message: result.stderr})
                     return
                 }
                 else
@@ -44,20 +47,25 @@ exports.sendToVroom = async (request, response) =>
                         },
                         onStderr(error) {
                             webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), error: `It was not possible rounting`}})
+                            helper.insertInDB("notificationsLog", {process: process.env.REQUEST_START, event: "error", token: request.params.token, date: (new Date).toLocaleString(), message: error})
                             return
                         },
                     }).then(solution => {
                         webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 200, timeRequest: helper.timeRequest(), solution: JSON.parse(`${solution}`)}})
+                        helper.insertInDB("notificationsLog", {process: process.env.REQUEST_START, event: "solution", token: request.params.token, date: (new Date).toLocaleString(), message: JSON.parse(`${solution}`)})
+
                         return
                     })
                 }
             }).catch((error) => {
                 webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), error: `It was not possible rounting`}})
+                helper.insertInDB("notificationsLog", {process: process.env.REQUEST_START, event: "error", token: request.params.token, date: (new Date).toLocaleString(), message: error})
                 return
             })
         })    
         .catch((error) => {
             webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), error: `It was not possible rounting`}})
+            helper.insertInDB("notificationsLog", {process: process.env.REQUEST_START, event: "error", token: request.params.token, date: (new Date).toLocaleString(), message: error})
             return
         })    
     }
