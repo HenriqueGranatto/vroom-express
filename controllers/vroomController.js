@@ -1,5 +1,6 @@
 'use strict'
 
+require('dotenv').config()
 const node_ssh = require('node-ssh')
 const helper = require('../helpers/helper')
 const vroomHelper = require('../helpers/vroomHelper')
@@ -7,29 +8,16 @@ const webhookHelper = require('../helpers/webhookHelper')
 
 exports.sendToVroom = async (request, response) =>
 {
-    const timeStart = Date.now()
-
     try
     {                
-        const verifyRequestData = vroomHelper.verifyRequestData(request.body)
-
-        if(verifyRequestData.status == 400) 
-        {
-            response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: verifyRequestData.message, request: request.body})
-            return
-        }
-
-        response.status(200).send({status: 200, timeRequest: helper.timeRequest(timeStart), message: "Routing in processing"})
-
-        const vroomCommand = vroomHelper.createVroomCommand(request, timeStart)
+        const vroomCommand = vroomHelper.createVroomCommand(request)
         
         if(typeof vroomCommand != 'string')
         {
-            webhookHelper.sendToObserver({subscriber: request.query.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(timeStart), error: vroomCommand.message, request: request.body}})
+            webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), error: vroomCommand.message, request: request.body}})
             return
         }
  
-        const solution = ""
         const ssh = new node_ssh()
          
         ssh.connect({
@@ -39,10 +27,10 @@ exports.sendToVroom = async (request, response) =>
             password : process.env.VROOM_SSH_PASSWORD
         })
         .then(function() {
-            ssh.execCommand(`cd / && echo '${JSON.stringify(request.body)}' > /vroom/${timeStart}`, { cwd:'/' }).then(function(result) {
+            ssh.execCommand(`cd / && echo '${JSON.stringify(request.body)}' > /vroom/${process.env.REQUEST_START}`, { cwd:'/' }).then(function(result) {
                 if(result.stderr) 
                 {
-                    webhookHelper.sendToObserver({subscriber: request.query.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(timeStart), error: `It was not possible send to rounting`, request: request.body}})
+                    webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), error: `It was not possible send to rounting`, request: request.body}})
                     return
                 }
                 else
@@ -53,23 +41,23 @@ exports.sendToVroom = async (request, response) =>
         
                         },
                         onStderr(error) {
-                            webhookHelper.sendToObserver({subscriber: request.query.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(timeStart), error: `It was not possible rounting`, request: request.body}})
+                            webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), error: `It was not possible rounting`, request: request.body}})
                             return
                         },
                     }).then(solution => {
-                        webhookHelper.sendToObserver({subscriber: request.query.token, event: ["all", "route"], data: {status: 200, timeRequest: helper.timeRequest(timeStart), solution: JSON.parse(`${solution}`), request: request.body}})
+                        webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 200, timeRequest: helper.timeRequest(), solution: JSON.parse(`${solution}`), request: request.body}})
                         return
                     })
                 }
             }).catch((error) => {
-                webhookHelper.sendToObserver({subscriber: request.query.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(timeStart), error: `It was not send possible`, request: request.body}})
+                webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), error: `It was not send possible`, request: request.body}})
                 return
             })
         })        
     }
     catch(e)
     {
-        response.status(400).send({status: 400, timeRequest: helper.timeRequest(timeStart), error: e.toString(), request: request.body})
+        response.status(400).send({status: 400, timeRequest: helper.timeRequest(), error: e.toString(), request: request.body})
         return
     }
 }

@@ -29,7 +29,7 @@ exports.verifyRequestData = (request) =>
     }
 }
 
-exports.createVroomCommand = (request, filename) =>
+exports.createVroomCommand = (request) =>
 {
     try
     {
@@ -47,7 +47,7 @@ exports.createVroomCommand = (request, filename) =>
             vroomCommand += ' -g ';   
         }
 
-        vroomCommand += ` -i ./vroom/${filename} ` 
+        vroomCommand += ` -i ./vroom/${process.env.REQUEST_START} ` 
         
         return vroomCommand
     }

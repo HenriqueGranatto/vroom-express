@@ -46,7 +46,7 @@ exports.sendToObserver = async (request) =>
 {
     try
     {
-        const config = await helper.selectInDB("subscribers", {subscriber: request.subscriber, event: request.event})
+        const config = await helper.selectInDB("subscribers", {token: request.token, event: request.event})
 
         config.map((obj) => {
             axios({

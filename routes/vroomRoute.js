@@ -3,7 +3,8 @@
 const express = require('express')
 const route = express.Router()
 const vroomController = require('../controllers/vroomController')
+const vroomMiddleware = require('../middlewares/vroomMiddleware')
 
-route.post('/', vroomController.sendToVroom)
+route.post('/:token', vroomMiddleware.sendToVroom, vroomController.sendToVroom)
 
 module.exports = route
