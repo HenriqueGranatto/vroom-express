@@ -3,7 +3,7 @@
 const helper = require('../helpers/helper')
 const vroomHelper = require('../helpers/vroomHelper')
 
-exports.sendToVroom = async (request, response) =>
+exports.sendToVroom = async (request, response, next) =>
 {
     try
     {                
@@ -15,7 +15,6 @@ exports.sendToVroom = async (request, response) =>
             return
         }
 
-        response.status(200).send({status: 200, timeRequest: helper.timeRequest(), message: "Routing in processing"})
         next()
     }
     catch(e)
