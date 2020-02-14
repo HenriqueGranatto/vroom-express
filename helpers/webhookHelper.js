@@ -12,10 +12,7 @@ exports.verifyIfWebhookExists = async (webhookData) =>
     {
         const db = await app.database()
 
-        const result = db.get('subscribers').find({
-            token: webhookData.token, 
-            event: webhookData.event,
-        }).value()
+        const result = await helper.selectInDB("subscribers", {token: webhookData.token, event: webhookData.event})
 
         if(typeof result == 'object')
         {
