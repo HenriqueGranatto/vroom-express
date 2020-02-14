@@ -36,14 +36,22 @@ exports.saveInS3 = async (file) =>
 {   
     AWS.config.update({region: 'sa-east-1', credentials: {accessKeyId: `${process.env.AWS_S3_ACCESS_KEY}`, secretAccessKey: `${process.env.AWS_S3_SECRET_KEY}`}})
     const S3 = new AWS.S3({apiVersion: '2006-03-01'})
-    const uploadParams = {Bucket: `gohusky`, Key: `${process.env.REQUEST_START}`, Body: `${file}`}
+    const uploadParams = {Bucket: `gohusky`, Key: `${process.env.REQUEST_START}`, Body: file}
+    
+    let response = null
 
-    S3.upload(uploadParams, function (error, data) {
-        console.log(error)
-        console.log(data)
-        if (error) { throw error }
-        return data.location 
-    });
+    await S3.upload(uploadParams, (error, data) => {
+        if(!error)
+        {
+            response = {status: 200, link: data}
+        }
+        else
+        {
+            response = {status: 400, error: error}
+        }
+    })
+
+    return response
 }
 
 exports.selectInDB = async (table, filter) =>

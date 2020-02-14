@@ -51,9 +51,18 @@ exports.sendToVroom = async (request, response) =>
                             return
                         },
                     }).then(solution => {
-                        solutionLINK = helper.saveInS3(JSON.stringify(JSON.parse(`${solution}`)))
-                        webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 200, timeRequest: helper.timeRequest(), solution: JSON.parse(`${solution}`)}})
-                        helper.insertInDB("notificationsLog", {process: process.env.REQUEST_START, event: "solution", token: request.params.token, date: (new Date).toLocaleString(), message: solutionLINK})
+                        helper.saveInS3(JSON.stringify(JSON.parse(`${solution}`))).then((upload) => {
+                            if(upload.status == 200)
+                            {
+                                webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 200, timeRequest: helper.timeRequest(), solution: JSON.parse(`${solution}`)}})
+                                helper.insertInDB("notificationsLog", {process: process.env.REQUEST_START, event: "solution", token: request.params.token, date: (new Date).toLocaleString(), message: upload.link})
+                            }
+                            else
+                            {
+                                webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), error: `It was not possible rounting`}})
+                                helper.insertInDB("notificationsLog", {process: process.env.REQUEST_START, event: "error", token: request.params.token, date: (new Date).toLocaleString(), message: upload.error})
+                            }
+                        })
 
                         return
                     })
