@@ -25,8 +25,9 @@ exports.insert = async (request, response) =>
         helper.insertInDB("subscribers", {
             token: request.params.token.toString(), 
             event: request.body.event || "all",
-            method: request.body.method || "POST", 
             url: request.body.url, 
+            method: request.body.method || "POST",
+            auth: request.body.auth.toString() || null,
             created: (new Date).toLocaleString(),
             deleted: false,
         })
@@ -45,12 +46,9 @@ exports.update = async (request, response) =>
 {
     try
     {        
-        helper.updateInDB("subscribers", { token: request.params.token, event: request.body.event }, {
-            method: request.body.method || "POST", 
-            event: request.body.event || "POST", 
-            url: request.body.url, 
-        })
-
+        let event = request.body.event
+        delete request.body.event
+        helper.updateInDB("subscribers", { token: request.params.token, event: event }, request.body)
         helper.insertInDB("subscribersLog", {event: "update", token: request.params.token, date: (new Date).toLocaleString(), request: request.body})
         response.status(200).send({status:200, timeRequest: helper.timeRequest(), message: "Notification URL updated with success"})
     }

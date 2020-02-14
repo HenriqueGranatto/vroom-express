@@ -35,7 +35,7 @@ exports.insert = async (request, response, next) =>
     try
     {        
         const verifyRequestParamsData = helper.verifyRequestData(request.params, ["token"])
-        const verifyRequestBodyData = helper.verifyRequestData(request.body, ["event", "url"])
+        const verifyRequestBodyData = helper.verifyRequestData(request.body, ["event", "method", "url"])
         const verifyIfEventExists = await webhookHelper.verifyIfEventExists(request.body.event)
         const verifyIfWebhookExists = await webhookHelper.verifyIfWebhookExists({token: request.params.token, event: request.body.event})
 
