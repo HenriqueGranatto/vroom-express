@@ -18,7 +18,7 @@ exports.sendToVroom = async (request, response) =>
         if(typeof vroomCommand != 'string')
         {
             webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), message: vroomCommand.message}})
-            helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_ROUTED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: vroomCommand.message})
+            helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_ROUTED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: `${vroomCommand.message}`})
             return
         }
  
@@ -35,7 +35,7 @@ exports.sendToVroom = async (request, response) =>
                 if(result.stderr) 
                 {
                     webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), message: `It was not possible send problem to rounting`}})
-                    helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_SENDED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: result.stderr})
+                    helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_SENDED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: `${result.stderr}`})
                     return
                 }
                 else
@@ -46,7 +46,7 @@ exports.sendToVroom = async (request, response) =>
                         cwd: '/',
                         onStderr(error) {
                             webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), message: `It was not possible rounting`}})
-                            helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_ROUTED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: error})
+                            helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_ROUTED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: `${error}`})
                             return
                         },
                     }).then(solution => {
@@ -56,30 +56,32 @@ exports.sendToVroom = async (request, response) =>
                             {
                                 webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 200, timeRequest: helper.timeRequest(), message: `It was not possible send solution`}})
                                 helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "SOLUTION_SENDED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors, error})
+                                return
                             }
                             else
                             {
                                 webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 200, timeRequest: helper.timeRequest(), message: `Problem successfully routed`, data: JSON.stringify(JSON.parse(`${solution}`)), dataLink: data.Location}})
                                 helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "SOLUTION_SENDED", token: request.params.token, date: (new Date).toLocaleString(), data: data.Location})
+                                return
                             }
                         })
 
                         return
                     }).catch((error) => {
                         webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), message: `It was not possible send solution`}})
-                        helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "SOLUTION_SENDED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: error})
+                        helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "SOLUTION_SENDED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: `${error}`})
                         return
                     })
                 }
             }).catch((error) => {
                 webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), message: `It was not possible send problem to rounting`}})
-                helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_SENDED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: error})
+                helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_SENDED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: `${error}`})
                 return
             })
         })    
         .catch((error) => {
             webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), message: `It was not possible send problem to rounting`}})
-            helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "error", token: request.params.token, date: (new Date).toLocaleString(), errors: error})
+            helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "error", token: request.params.token, date: (new Date).toLocaleString(), errors: `${error}`})
             return
         })    
     }
