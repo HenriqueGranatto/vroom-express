@@ -57,14 +57,14 @@ exports.insert = async (request, response, next) =>
         if(verifyIfEventExists.status == 400)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: verifyIfEventExists.message})
-            await helper.insertInDB("subscriberLog", {event: "INSERT_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyIfEventExists.errors})
+            await helper.insertInDB("subscriberLog", {event: "INSERT_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyIfEventExists.message})
             return
         }
 
         if(verifyIfWebhookExists.status == 200)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: verifyIfWebhookExists.message})
-            await helper.insertInDB("subscriberLog", {event: "INSERT_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyIfWebhookExists.errors})
+            await helper.insertInDB("subscriberLog", {event: "INSERT_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyIfWebhookExists.message})
             return
         }
 
@@ -106,7 +106,7 @@ exports.update = async (request, response, next) =>
         if(verifyIfWebhookExists.status == 400)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Webhook not exists"})
-            await helper.insertInDB("subscriberLog", {event: "UPDATE_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyIfWebhookExists.errors})
+            await helper.insertInDB("subscriberLog", {event: "UPDATE_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: "Webhook not exists"})
             return
         }
 
@@ -147,7 +147,7 @@ exports.delete = async (request, response, next) =>
         if(verifyIfWebhookExists.status == 400)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Webhook not exists"})
-            await helper.insertInDB("subscriberLog", {event: "DELETE_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyIfWebhookExists.errors})
+            await helper.insertInDB("subscriberLog", {event: "DELETE_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: "Webhook not exists"})
             return
         }
 
