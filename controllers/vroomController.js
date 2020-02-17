@@ -59,7 +59,7 @@ exports.sendToVroom = async (request, response) =>
                             }
                             else
                             {
-                                webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 200, timeRequest: helper.timeRequest(), message: `Problem successfully routed`, data: JSON.stringify(JSON.parse(`${solution}`))}})
+                                webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 200, timeRequest: helper.timeRequest(), message: `Problem successfully routed`, data: JSON.stringify(JSON.parse(`${solution}`)), dataLink: data.Location}})
                                 helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "SOLUTION_SENDED", token: request.params.token, date: (new Date).toLocaleString(), data: data.Location})
                             }
                         })

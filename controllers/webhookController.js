@@ -11,7 +11,6 @@ exports.select = async (request, response) =>
     }
     catch(e)
     {
-        console.log(e)
         response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), error: "Cannot possible process the request"})
         await helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
         return

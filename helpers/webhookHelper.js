@@ -1,6 +1,6 @@
 'use strict'
 
-const app = require('../app')
+require('dotenv').config()
 const axios = require('axios').default
 const helper = require('../helpers/helper')
 
@@ -50,13 +50,23 @@ exports.sendToObserver = async (settingsToRequest) =>
 
         config.map((obj) => {
             const request =  { method: obj.method, url: obj.url, data: settingsToRequest.data }
-            axios(request)
-            helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED", token: request.params.token, date: (new Date).toLocaleString(), data: request})
+            // axios(request)
+
+            if(request.data.dataLink)
+            {
+                request.data.data = request.data.dataLink
+                delete request.data.dataLink
+                helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED", token: settingsToRequest.token, date: (new Date).toLocaleString(), data: request})
+            }
+            else
+            {
+                helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED", token: settingsToRequest.token, date: (new Date).toLocaleString(), data: request})
+            }
         })
     }
     catch(e)
     {
-        helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), data: e})
+        helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED_ERROR", token: settingsToRequest.token, date: (new Date).toLocaleString(), data: e})
         throw e
     }
 }
