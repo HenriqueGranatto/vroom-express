@@ -45,9 +45,7 @@ exports.update = async (request, response) =>
 {
     try
     {        
-        let event = request.body.event
-        delete request.body.event
-        await helper.updateInDB("subscribers", { token: request.params.token, event: event }, request.body)
+        await helper.updateInDB("subscribers", { token: request.params.token, event: request.body.event }, request.body)
         await helper.insertInDB("subscriberLog", {event: "UPDATE_SUBSCRIBER", token: request.params.token, date: (new Date).toLocaleString(), request: request.body})
         response.status(200).send({status:200, timeRequest: await helper.timeRequest(), message: "Notification URL updated with success"})
     }
