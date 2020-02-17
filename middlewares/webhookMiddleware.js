@@ -4,10 +4,10 @@ require('dotenv').config()
 const helper = require('../helpers/helper')
 const webhookHelper = require('../helpers/webhookHelper')
 
-process.env.REQUEST_START = Date.now()
-
 exports.select = async (request, response, next) =>
 {
+    process.env.REQUEST_START = Date.now()
+
     try
     {        
         const verifyRequestParamsData = helper.verifyRequestData(request.params, ["token"])
@@ -31,6 +31,8 @@ exports.select = async (request, response, next) =>
 
 exports.insert = async (request, response, next) =>
 {
+    process.env.REQUEST_START = Date.now()
+
     try
     {        
         const verifyRequestParamsData = helper.verifyRequestData(request.params, ["token"])
@@ -78,6 +80,8 @@ exports.insert = async (request, response, next) =>
 
 exports.update = async (request, response, next) =>
 {
+    process.env.REQUEST_START = Date.now()
+
     try
     {        
         const verifyRequestBodyData = helper.verifyRequestData(request.body, ["event"])
@@ -118,6 +122,8 @@ exports.update = async (request, response, next) =>
 
 exports.delete = async (request, response, next) =>
 {
+    process.env.REQUEST_START = Date.now()
+
     try
     {        
         const verifyRequestBodyData = helper.verifyRequestData(request.body, ["event"])
