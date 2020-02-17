@@ -50,7 +50,6 @@ exports.sendToObserver = async (settingsToRequest) =>
 
         config.map((obj) => {
             const request =  { method: obj.method, url: obj.url, data: settingsToRequest.data }
-            request.data.data = JSON.parse(request.data.data)
         
             if(request.data.dataLink)
             {
