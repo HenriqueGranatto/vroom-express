@@ -42,22 +42,21 @@ exports.verifyIfEventExists = (event) =>
     }
 }
 
-exports.sendToObserver = async (request) =>
+exports.sendToObserver = async (settingsToRequest) =>
 {
     try
     {
-        const config = await helper.selectInDB("subscribers", {token: request.token, event: request.event})
+        const config = await helper.selectInDB("subscribers", {token: settingsToRequest.token, event: settingsToRequest.event})
 
         config.map((obj) => {
-            axios({
-                method: obj.method,
-                url:    obj.url,
-                data:   request.data
-            })
+            const request =  { method: obj.method, url: obj.url, data: settingsToRequest.data }
+            await axios(request)
+            helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED", token: request.params.token, date: (new Date).toLocaleString(), data: request})
         })
     }
     catch(e)
     {
+        helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), data: e})
         throw e
     }
 }
