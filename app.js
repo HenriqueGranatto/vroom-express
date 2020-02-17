@@ -24,7 +24,7 @@ exports.database = async () =>
     const adapter = new FileSync('banco.json')
     const db = await low(adapter)
     
-    db.defaults({ subscribers: [], subscribersLog: [], notificationsLog: [] }).write()
+    db.defaults({ subscribers: [], subscribersLog: [], notificationsLog: [], routesLog: [] }).write()
 
     return db
 }
