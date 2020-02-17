@@ -86,7 +86,7 @@ exports.sendToVroom = async (request, response) =>
     catch(e)
     {
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), error: `Cannot possible process the request`})
-        helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_RECEIVED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), message: e.toString()})
+        helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_RECEIVED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), message: e})
         return
     }
 }

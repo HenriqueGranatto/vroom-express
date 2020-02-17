@@ -24,7 +24,7 @@ exports.select = async (request, response, next) =>
     catch(e)
     {
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), error: "Cannot possible process the request"})
-        helper.insertInDB("subscriberLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
+        helper.insertInDB("subscriberLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
         return
     }
 }
@@ -73,7 +73,7 @@ exports.insert = async (request, response, next) =>
     catch(e)
     {
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), error: "Cannot possible process the request"})
-        helper.insertInDB("subscriberLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
+        helper.insertInDB("subscriberLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
         return
     }
 }
@@ -115,7 +115,7 @@ exports.update = async (request, response, next) =>
     catch(e)
     {
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), error: "Cannot possible process the request"})
-        helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
+        helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
         return
     }
 }
@@ -156,7 +156,7 @@ exports.delete = async (request, response, next) =>
     catch(e)
     {
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), error: "Cannot possible process the request"})
-        helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
+        helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
         return
     }
 }

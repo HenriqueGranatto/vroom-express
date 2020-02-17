@@ -50,7 +50,7 @@ exports.sendToObserver = async (settingsToRequest) =>
 
         config.map((obj) => {
             const request =  { method: obj.method, url: obj.url, data: settingsToRequest.data }
-            await axios(request)
+            axios(request)
             helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED", token: request.params.token, date: (new Date).toLocaleString(), data: request})
         })
     }

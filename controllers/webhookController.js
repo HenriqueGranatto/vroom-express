@@ -13,7 +13,7 @@ exports.select = async (request, response) =>
     {
         console.log(e)
         response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), error: "Cannot possible process the request"})
-        await helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
+        await helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
         return
     }
 }
@@ -37,7 +37,7 @@ exports.insert = async (request, response) =>
     catch(e)
     {
         response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), error: "Cannot possible process the request"})
-        await helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
+        await helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
         return
     }
 }
@@ -55,7 +55,7 @@ exports.update = async (request, response) =>
     catch(e)
     {
         response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), error: "Cannot possible process the request"})
-        await helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
+        await helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
         return
     }
 }
@@ -72,7 +72,7 @@ exports.delete = async (request, response) =>
     catch(e)
     {
         response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), error: "Cannot possible process the request"})
-        await helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
+        await helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
         return
     }
 }
