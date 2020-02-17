@@ -15,7 +15,7 @@ exports.select = async (request, response, next) =>
         if(verifyRequestParamsData.status == 400)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: verifyRequestParamsData.errors})
-            helper.insertInDB("subscribersLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyRequestParamsData.errors})
+            helper.insertInDB("subscriberLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyRequestParamsData.errors})
             return
         }
 
@@ -24,7 +24,7 @@ exports.select = async (request, response, next) =>
     catch(e)
     {
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), error: "Cannot possible process the request"})
-        helper.insertInDB("subscribersLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
+        helper.insertInDB("subscriberLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
         return
     }
 }
@@ -43,28 +43,28 @@ exports.insert = async (request, response, next) =>
         if(verifyRequestParamsData.status == 400)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: verifyRequestParamsData.errors})
-            helper.insertInDB("subscribersLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyRequestParamsData.errors})
+            helper.insertInDB("subscriberLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyRequestParamsData.errors})
             return
         }
 
         if(verifyRequestBodyData.status == 400)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: verifyRequestBodyData.errors})
-            helper.insertInDB("subscribersLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyRequestBodyData.errors})
+            helper.insertInDB("subscriberLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyRequestBodyData.errors})
             return
         }
         
         if(verifyIfEventExists.status == 400)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: verifyIfEventExists.message})
-            helper.insertInDB("subscribersLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyIfEventExists.message})
+            helper.insertInDB("subscriberLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyIfEventExists.message})
             return
         }
 
         if(verifyIfWebhookExists.status == 200)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: verifyIfWebhookExists.message})
-            helper.insertInDB("subscribersLog", {token: request.params.token, date: (new Date).toLocaleString(), reques: request.body, errors: verifyIfWebhookExists.message})
+            helper.insertInDB("subscriberLog", {token: request.params.token, date: (new Date).toLocaleString(), reques: request.body, errors: verifyIfWebhookExists.message})
             return
         }
 
@@ -73,7 +73,7 @@ exports.insert = async (request, response, next) =>
     catch(e)
     {
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), error: "Cannot possible process the request"})
-        helper.insertInDB("subscribersLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
+        helper.insertInDB("subscriberLog", {token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
         return
     }
 }
@@ -92,21 +92,21 @@ exports.update = async (request, response, next) =>
         if(verifyRequestParamsData.status == 400)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: verifyRequestParamsData.errors})
-            helper.insertInDB("subscribersLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyRequestParamsData.errors})
+            helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyRequestParamsData.errors})
             return
         }
 
         if(verifyRequestBodyData.status == 400)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: verifyRequestBodyData.errors})
-            helper.insertInDB("subscribersLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyRequestBodyData.errors})
+            helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyRequestBodyData.errors})
             return
         }
 
         if(verifyIfWebhookExists.status == 400)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Webhook not exists"})
-            helper.insertInDB("subscribersLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), reques: request.body, errors: "Webhook not exists"})
+            helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), reques: request.body, errors: "Webhook not exists"})
             return
         }
 
@@ -115,7 +115,7 @@ exports.update = async (request, response, next) =>
     catch(e)
     {
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), error: "Cannot possible process the request"})
-        helper.insertInDB("subscribersLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
+        helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
         return
     }
 }
@@ -133,21 +133,21 @@ exports.delete = async (request, response, next) =>
         if(verifyRequestParamsData.status == 400)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: verifyRequestParamsData.errors})
-            helper.insertInDB("subscribersLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyRequestParamsData.errors})
+            helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyRequestParamsData.errors})
             return
         }
 
         if(verifyRequestBodyData.status == 400)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: verifyRequestBodyData.errors})
-            helper.insertInDB("subscribersLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyRequestBodyData.errors})
+            helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: verifyRequestBodyData.errors})
             return
         }
 
         if(verifyIfWebhookExists.status == 400)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Webhook not exists"})
-            helper.insertInDB("subscribersLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), reques: request.body, errors: "Webhook not exists"})
+            helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), reques: request.body, errors: "Webhook not exists"})
             return
         }
 
@@ -156,7 +156,7 @@ exports.delete = async (request, response, next) =>
     catch(e)
     {
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), error: "Cannot possible process the request"})
-        helper.insertInDB("subscribersLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
+        helper.insertInDB("subscriberLog", {event: "error", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e.toString()})
         return
     }
 }

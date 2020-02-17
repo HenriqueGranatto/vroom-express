@@ -14,6 +14,7 @@ const webhookRoute = require('./routes/webhookRoute')
 
 app.use('/route', vroomRoute)
 app.use('/notification', webhookRoute)
+app.use('/', (req, res) => console.log(req.body))
 
 exports.app = app
 exports.database = async () =>
@@ -24,7 +25,7 @@ exports.database = async () =>
     const adapter = new FileSync('banco.json')
     const db = await low(adapter)
     
-    db.defaults({ subscribers: [], subscribersLog: [], notificationsLog: [], routesLog: [] }).write()
+    db.defaults({ subscribers: [], subscriberLog: [], notificationLog: [], routeLog: [] }).write()
 
     return db
 }
