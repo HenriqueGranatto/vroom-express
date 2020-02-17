@@ -50,27 +50,26 @@ exports.sendToObserver = async (settingsToRequest) =>
 
         config.map((obj) => {
             const request =  { method: obj.method, url: obj.url, data: settingsToRequest.data }
+            request.data.data = JSON.parse(request.data.data)
         
             if(request.data.dataLink)
             {
-                let dataLink = request.data.dataLink
-                delete request.data.dataLink
-
-                axios(request)
-
-                request.data.data = dataLink
-                helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED", token: settingsToRequest.token, date: (new Date).toLocaleString(), data: request})
+                axios(request).then(() => {
+                    delete request.data.data
+                    helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED", token: settingsToRequest.token, date: (new Date).toLocaleString(), data: request})
+                })
             }
             else
             {
-                axios(request)
-                helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED", token: settingsToRequest.token, date: (new Date).toLocaleString(), data: request})
+                axios(request).then(() => {
+                    helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED", token: settingsToRequest.token, date: (new Date).toLocaleString(), data: request})
+                })
             }
         })
     }
     catch(e)
     {
-        helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED_ERROR", token: settingsToRequest.token, date: (new Date).toLocaleString(), data: e})
+        helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED_ERROR", token: settingsToRequest.token, date: (new Date).toLocaleString(), error: e})
         throw e
     }
 }
