@@ -34,6 +34,7 @@ exports.verifyRequestData = (request, filters) =>
 
 exports.saveInS3 = async (file, callback) =>
 {   
+    console.log(process.env)
     AWS.config.update({region: 'sa-east-1', credentials: {accessKeyId: `${process.env.AWS_S3_ACCESS_KEY}`, secretAccessKey: `${process.env.AWS_S3_SECRET_KEY}`}})
     const S3 = new AWS.S3({apiVersion: '2006-03-01'})
     const uploadParams = {Bucket: `gohusky`, Key: `${process.env.REQUEST_START}`, Body: file}
