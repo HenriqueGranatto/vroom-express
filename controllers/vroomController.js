@@ -10,7 +10,7 @@ exports.sendToVroom = async (request, response) =>
 {
     try
     {  
-        response.status(200).send({status: 200, timeRequest: helper.timeRequest(), message: "Routing in processing"})
+        response.status(200).send({status: 200, timeRequest: helper.timeRequest(), message: "Routing in processing", data: {process: process.env.REQUEST_START}})
         helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_RECEIVED", token: request.params.token, date: (new Date).toLocaleString()})
 
         const vroomCommand = vroomHelper.createVroomCommand(request)
@@ -89,6 +89,23 @@ exports.sendToVroom = async (request, response) =>
     {
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), error: `Cannot possible process the request`})
         helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_RECEIVED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: e})
+        return
+    }
+}
+
+exports.selectRoutingProcessLog = async (request, response) =>
+{
+    try
+    {        
+        const routeLog = await helper.selectInDB("routeLog", Object.assign({token: request.params.token}, request.body))
+        const notificationLog = await helper.selectInDB("notificationLog", Object.assign({token: request.params.token}, request.body))
+
+        response.status(200).send({status:200, timeRequest: await helper.timeRequest(), data: {routeLog, notificationLog}})
+    }
+    catch(e)
+    {
+        response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), error: "Cannot possible process the request"})
+        await helper.insertInDB("subscriberLog", {event: "SELECT_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
         return
     }
 }
