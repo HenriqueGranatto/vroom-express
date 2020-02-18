@@ -49,6 +49,8 @@ exports.sendToObserver = async (settingsToRequest) =>
         const config = await helper.selectInDB("subscribers", {token: settingsToRequest.token, event: settingsToRequest.event})
 
         config.map((obj) => {
+            settingsToRequest.data.auth = obj.auth
+
             const request =  { method: obj.method, url: obj.url, data: settingsToRequest.data }
         
             if(request.data.dataLink)
