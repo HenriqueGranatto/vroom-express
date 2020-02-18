@@ -7,11 +7,11 @@ exports.select = async (request, response) =>
     try
     {        
         const result = await helper.selectInDB("subscribers", Object.assign({token: request.params.token}, request.body))
-        response.status(200).send({status:200, timeRequest: await helper.timeRequest(), message: result})
+        response.status(200).send({status:200, timeRequest: await helper.timeRequest(), data: result})
     }
     catch(e)
     {
-        response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), error: "Cannot possible process the request"})
+        response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), message: "Cannot possible process the request"})
         await helper.insertInDB("subscriberLog", {event: "SELECT_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
         return
     }
@@ -35,7 +35,7 @@ exports.insert = async (request, response) =>
     }
     catch(e)
     {
-        response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), error: "Cannot possible process the request"})
+        response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), message: "Cannot possible process the request"})
         await helper.insertInDB("subscriberLog", {event: "INSERT_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
         return
     }
@@ -51,7 +51,7 @@ exports.update = async (request, response) =>
     }
     catch(e)
     {
-        response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), error: "Cannot possible process the request"})
+        response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), message: "Cannot possible process the request"})
         await helper.insertInDB("subscriberLog", {event: "UPDATE_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
         return
     }
@@ -68,7 +68,7 @@ exports.delete = async (request, response) =>
     }
     catch(e)
     {
-        response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), error: "Cannot possible process the request"})
+        response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), message: "Cannot possible process the request"})
         await helper.insertInDB("subscriberLog", {event: "DELETE_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
         return
     }

@@ -14,7 +14,7 @@ exports.sendToVroom = async (request, response, next) =>
 
         if(verifyRequestData.status == 400) 
         {
-            response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: verifyRequestData.message})
+            response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Request params bad formatted", errors: verifyRequestData.message})
             return
         }
 
@@ -39,13 +39,13 @@ exports.selectRoutingProcessLog = async (request, response, next) =>
 
         if(verifyRequestParamsData.status == 400)
         {
-            response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: verifyRequestParamsData.errors})
+            response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Request params bad formatted", errors: verifyRequestParamsData.errors})
             return
         }
 
         if(verifyRequestBodyData.status == 400)
         {
-            response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: verifyRequestBodyData.errors})
+            response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Request params bad formatted", errors: verifyRequestBodyData.errors})
             return
         }
 
