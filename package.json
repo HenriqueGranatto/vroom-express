@@ -1,16 +1,16 @@
 {
   "version": "1.0.0",
-  "name": "vroom-express",
+  "name": "router-express",
   "author": "Henrique Granatto",
   "keywords": [
-    "VROOM",
+    "router",
     "API",
     "OSRM"
   ],
-  "description": "An express server to expose VROOM as a web API.",
+  "description": "An express server to expose router as a web API.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HenriqueGranatto/vroom-express"
+    "url": "https://github.com/HenriqueGranatto/router-express"
   },
   "scripts": {
     "start": "node bin/server.js"

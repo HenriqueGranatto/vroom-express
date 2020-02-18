@@ -3,35 +3,35 @@
 require('dotenv').config()
 const node_ssh = require('node-ssh')
 const helper = require('../helpers/helper')
-const vroomHelper = require('../helpers/vroomHelper')
+const routerHelper = require('../helpers/routerHelper')
 const webhookHelper = require('../helpers/webhookHelper')
 
-exports.sendToVroom = async (request, response) =>
+exports.sendTorouter = async (request, response) =>
 {
     try
     {  
         response.status(200).send({status: 200, timeRequest: helper.timeRequest(), message: "Routing in processing", data: {process: process.env.REQUEST_START}})
         helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_RECEIVED", token: request.params.token, date: (new Date).toLocaleString()})
 
-        const vroomCommand = vroomHelper.createVroomCommand(request)
+        const routerCommand = routerHelper.createrouterCommand(request)
         
-        if(typeof vroomCommand != 'string')
+        if(typeof routerCommand != 'string')
         {
-            webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), message: vroomCommand.message}})
-            helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_ROUTED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: `${vroomCommand.message}`})
+            webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), message: routerCommand.message}})
+            helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_ROUTED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: `${routerCommand.message}`})
             return
         }
  
         const ssh = new node_ssh()
          
         ssh.connect({
-            host: process.env.VROOM_IP,
-            port: process.env.VROOM_PORT,
-            username: process.env.VROOM_SSH_USER,
-            password : process.env.VROOM_SSH_PASSWORD
+            host: process.env.router_IP,
+            port: process.env.router_PORT,
+            username: process.env.router_SSH_USER,
+            password : process.env.router_SSH_PASSWORD
         })
         .then(function() {
-            ssh.execCommand(`cd / && echo '${JSON.stringify(request.body)}' > /vroom/${process.env.REQUEST_START}`, { cwd:'/' }).then(function(result) {
+            ssh.execCommand(`cd / && echo '${JSON.stringify(request.body)}' > /router/${process.env.REQUEST_START}`, { cwd:'/' }).then(function(result) {
                 if(result.stderr) 
                 {
                     webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), message: `It was not possible send problem to rounting`}})
@@ -42,7 +42,7 @@ exports.sendToVroom = async (request, response) =>
                 {
                     helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_SENDED", token: request.params.token, date: (new Date).toLocaleString() })
 
-                    ssh.exec(`${process.env.VROOM_PATH} ${vroomCommand}`, [], {
+                    ssh.exec(`${process.env.router_PATH} ${routerCommand}`, [], {
                         cwd: '/',
                         onStderr(error) {
                             webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), message: `It was not possible rounting`}})

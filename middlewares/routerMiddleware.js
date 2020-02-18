@@ -2,15 +2,15 @@
 
 require('dotenv').config()
 const helper = require('../helpers/helper')
-const vroomHelper = require('../helpers/vroomHelper')
+const routerHelper = require('../helpers/routerHelper')
 
-exports.sendToVroom = async (request, response, next) =>
+exports.sendTorouter = async (request, response, next) =>
 {
     process.env.REQUEST_START = Date.now()
 
     try
     {                
-        const verifyRequestData = vroomHelper.verifyRequestData(request.body)
+        const verifyRequestData = routerHelper.verifyRequestData(request.body)
 
         if(verifyRequestData.status == 400) 
         {

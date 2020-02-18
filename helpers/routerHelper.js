@@ -29,27 +29,27 @@ exports.verifyRequestData = (request) =>
     }
 }
 
-exports.createVroomCommand = (request) =>
+exports.createrouterCommand = (request) =>
 {
     try
     {
-        let vroomCommand = `` 
+        let routerCommand = `` 
 
-        if(!process.env.VROOM_ROUTER && !process.env.OSRM_IP && !process.env.OSRM_PORT && !process.env.CPU_CORES)
+        if(!process.env.router_ROUTER && !process.env.OSRM_IP && !process.env.OSRM_PORT && !process.env.CPU_CORES)
         {
             return {status: 400, message: "Necessary to inform the ROUTER, OSRM_IP, OSRM_PORT and CPU_CORES"}
         }
     
-        vroomCommand += `-r ${process.env.VROOM_ROUTER} -a car:${process.env.OSRM_IP} -p car:${process.env.OSRM_PORT} -t ${process.env.CPU_CORES}`
+        routerCommand += `-r ${process.env.router_ROUTER} -a car:${process.env.OSRM_IP} -p car:${process.env.OSRM_PORT} -t ${process.env.CPU_CORES}`
     
-        if(!process.env.VROOM_GEOMETRY && process.env.VROOM_OVERRIDE && 'options' in request && 'g' in request.options && request.options.g)
+        if(!process.env.router_GEOMETRY && process.env.router_OVERRIDE && 'options' in request && 'g' in request.options && request.options.g)
         {
-            vroomCommand += ' -g ';   
+            routerCommand += ' -g ';   
         }
 
-        vroomCommand += ` -i ./vroom/${process.env.REQUEST_START} ` 
+        routerCommand += ` -i ./router/${process.env.REQUEST_START} ` 
         
-        return vroomCommand
+        return routerCommand
     }
     catch(e)
     {

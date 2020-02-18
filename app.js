@@ -9,11 +9,11 @@ const app = express()
 app.use(bodyParser.json({limit: `${process.env.REQUEST_LIMIT}`}))
 app.use(bodyParser.urlencoded({extended: false, limit: `${process.env.REQUEST_LIMIT}`}))
 
-const vroomRoute = require('./routes/vroomRoute')
+const routerRoute = require('./routes/routerRoute')
 const webhookRoute = require('./routes/webhookRoute')
 
-app.use('/route', vroomRoute)
-app.use('/notification', webhookRoute)
+app.use('/route', routerRoute)
+app.use('/webhook', webhookRoute)
 
 exports.app = app
 exports.database = async () =>
