@@ -47,7 +47,7 @@ exports.createrouterCommand = (request) =>
             routerCommand += ' -g ';   
         }
 
-        routerCommand += ` -i ./router/${process.env.REQUEST_START} ` 
+        routerCommand += ` -i ./vroom/${process.env.REQUEST_START} ` 
         
         return routerCommand
     }

@@ -31,7 +31,7 @@ exports.sendTorouter = async (request, response) =>
             password : process.env.VROOM_SSH_PASSWORD
         })
         .then(function() {
-            ssh.execCommand(`cd / && echo '${JSON.stringify(request.body)}' > /router/${process.env.REQUEST_START}`, { cwd:'/' }).then(function(result) {
+            ssh.execCommand(`cd / && echo '${JSON.stringify(request.body)}' > /vroom/${process.env.REQUEST_START}`, { cwd:'/' }).then(function(result) {
                 if(result.stderr) 
                 {
                     webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), message: `It was not possible send problem to rounting`}})
