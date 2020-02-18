@@ -25,10 +25,10 @@ exports.sendTorouter = async (request, response) =>
         const ssh = new node_ssh()
          
         ssh.connect({
-            host: process.env.router_IP,
-            port: process.env.router_PORT,
-            username: process.env.router_SSH_USER,
-            password : process.env.router_SSH_PASSWORD
+            host: process.env.VROOM_IP,
+            port: process.env.VROOM_PORT,
+            username: process.env.VROOM_SSH_USER,
+            password : process.env.VROOM_SSH_PASSWORD
         })
         .then(function() {
             ssh.execCommand(`cd / && echo '${JSON.stringify(request.body)}' > /router/${process.env.REQUEST_START}`, { cwd:'/' }).then(function(result) {
@@ -42,7 +42,7 @@ exports.sendTorouter = async (request, response) =>
                 {
                     helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_SENDED", token: request.params.token, date: (new Date).toLocaleString() })
 
-                    ssh.exec(`${process.env.router_PATH} ${routerCommand}`, [], {
+                    ssh.exec(`${process.env.VROOM_PATH} ${routerCommand}`, [], {
                         cwd: '/',
                         onStderr(error) {
                             webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), message: `It was not possible rounting`}})

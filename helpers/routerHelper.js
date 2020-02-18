@@ -35,14 +35,14 @@ exports.createrouterCommand = (request) =>
     {
         let routerCommand = `` 
 
-        if(!process.env.router_ROUTER && !process.env.OSRM_IP && !process.env.OSRM_PORT && !process.env.CPU_CORES)
+        if(!process.env.VROOM_ROUTER && !process.env.OSRM_IP && !process.env.OSRM_PORT && !process.env.CPU_CORES)
         {
             return {status: 400, message: "Necessary to inform the ROUTER, OSRM_IP, OSRM_PORT and CPU_CORES"}
         }
     
-        routerCommand += `-r ${process.env.router_ROUTER} -a car:${process.env.OSRM_IP} -p car:${process.env.OSRM_PORT} -t ${process.env.CPU_CORES}`
+        routerCommand += `-r ${process.env.VROOM_ROUTER} -a car:${process.env.OSRM_IP} -p car:${process.env.OSRM_PORT} -t ${process.env.CPU_CORES}`
     
-        if(!process.env.router_GEOMETRY && process.env.router_OVERRIDE && 'options' in request && 'g' in request.options && request.options.g)
+        if(!process.env.VROOM_GEOMETRY && process.env.VROOM_OVERRIDE && 'options' in request && 'g' in request.options && request.options.g)
         {
             routerCommand += ' -g ';   
         }
