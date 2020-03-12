@@ -6,7 +6,7 @@ const routerHelper = require('../helpers/routerHelper')
 
 exports.sendTorouter = async (request, response, next) =>
 {
-    console.log(`Received at ${date.toLocaleString()}`)
+    console.log(`Received at ${(new Date()).toLocaleString()}`)
     process.env.REQUEST_START = Date.now()
 
     try
