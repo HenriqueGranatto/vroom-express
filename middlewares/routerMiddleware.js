@@ -36,17 +36,10 @@ exports.selectRoutingProcessLog = async (request, response, next) =>
     try
     {                
         const verifyRequestParamsData = helper.verifyRequestData(request.params, ["token"])
-        const verifyRequestBodyData = helper.verifyRequestData(request.body, ["process"])
 
         if(verifyRequestParamsData.status == 400)
         {
             response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Request params bad formatted", errors: verifyRequestParamsData.errors})
-            return
-        }
-
-        if(verifyRequestBodyData.status == 400)
-        {
-            response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Request params bad formatted", errors: verifyRequestBodyData.errors})
             return
         }
 

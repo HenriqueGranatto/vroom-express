@@ -6,7 +6,7 @@ const helper = require('../helpers/helper')
 const routerHelper = require('../helpers/routerHelper')
 const webhookHelper = require('../helpers/webhookHelper')
 
-exports.sendTorouter = async (request, response) =>
+exports.sendToRouter = async (request, response) =>
 {
     try
     {  
