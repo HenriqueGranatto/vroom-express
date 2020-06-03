@@ -1,10 +1,14 @@
 'use strict'
 
 const express = require('express')
+const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 require('dotenv').config()
 
 const app = express()
+
+mongoose.connect('mongodb://nodejs:node123@ds263161.mlab.com:63161/nodejs', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.set('useFindAndModify', false)
 
 app.use(bodyParser.json({limit: `${process.env.REQUEST_LIMIT}`}))
 app.use(bodyParser.urlencoded({extended: false, limit: `${process.env.REQUEST_LIMIT}`}))
