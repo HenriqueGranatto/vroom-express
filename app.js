@@ -7,7 +7,7 @@ require('dotenv').config()
 
 const app = express()
 
-mongoose.connect('mongodb://nodejs:node123@ds263161.mlab.com:63161/nodejs', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://root:root@13.58.178.5:6000/vroom', { useNewUrlParser: true, useUnifiedTopology: true })
 mongoose.set('useFindAndModify', false)
 
 app.use(bodyParser.json({limit: `${process.env.REQUEST_LIMIT}`}))
@@ -15,8 +15,8 @@ app.use(bodyParser.urlencoded({extended: false, limit: `${process.env.REQUEST_LI
 
 const subscribers = require('./models/subscribers')
 const subscriberLog = require('./models/subscriberLog')
-const notificationLog = require('./models/notificationLog-list')
-const routeLog = require('./models/routeLog-points')
+const notificationLog = require('./models/notificationLog')
+const routeLog = require('./models/routeLog')
 
 const routerRoute = require('./routes/routerRoute')
 const webhookRoute = require('./routes/webhookRoute')
