@@ -5,64 +5,33 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 // CRIANDO O ESQUEMA DOS REGISTROS DE CÓDIGOS DE REFERENCIA A SEREM SALVOS NA COLEÇÃO
-const code = new Schema({
-    publicCode: 
+const subscriberLog = new Schema({
+    event: 
     {
         type: 'String',
         required: true,
     },
 
-    points:
+    token:
     {
-        type: 'Number',
-        default: 100,
+        type: 'String',
         required: true,
     },
 
-    rate:
-    {
-        type: 'Number',
-        default: 30,
-        required: true,
-    },
-
-    expireIn:
+    date:
     {
         type: 'Date',
         default: '9999/01/01',
         required: false
     },
 
-    amountOfFreeRate:
+    request:
     {
-        type: 'Number',
-        default: 0,
-        required: true,   
-    },
-
-    
-    amountOfFreeRatealreadyUsed:
-    {
-        type: 'Number',
-        default: 0,
-        required: true,   
-    },
-
-    amountOfUse:
-    {
-        type: 'Number',
-        default: 0,
-        required: true,   
-    },
-
-    alreadyUsed:
-    {
-        type: 'Number',
-        default: 0,
-        required: true,  
+        type: 'String',
+        required: true,
     }
 });
 
 
 // EXPORTANDOS O ESQUEMA
-module.exports = mongoose.model('Code', code)
+module.exports = mongoose.model('SubscriberLog', subscriberLog)

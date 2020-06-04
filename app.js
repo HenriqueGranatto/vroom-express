@@ -13,6 +13,11 @@ mongoose.set('useFindAndModify', false)
 app.use(bodyParser.json({limit: `${process.env.REQUEST_LIMIT}`}))
 app.use(bodyParser.urlencoded({extended: false, limit: `${process.env.REQUEST_LIMIT}`}))
 
+const subscribers = require('./models/subscribers')
+const subscriberLog = require('./models/subscriberLog')
+const notificationLog = require('./models/notificationLog-list')
+const routeLog = require('./models/routeLog-points')
+
 const routerRoute = require('./routes/routerRoute')
 const webhookRoute = require('./routes/webhookRoute')
 
