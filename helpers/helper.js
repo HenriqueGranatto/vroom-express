@@ -95,5 +95,5 @@ exports.deleteInDB = async (model, filter) =>
     model = `${model[0].toUpperCase()}${model.slice(1)}`
     let db = mongoose.model(model)
     db = new db()
-    console.log(await db.deleteOne(filter))
+    db.deleteOne(filter)
 }
