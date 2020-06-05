@@ -3,6 +3,7 @@
 require('dotenv').config()
 const app = require('../app')
 const AWS = require('aws-sdk')
+const mongoose = require('mongoose')
 
 exports.timeRequest = () => parseFloat((Date.now() - process.env.REQUEST_START) / 1000).toFixed(2)
 
@@ -41,21 +42,19 @@ exports.saveInS3 = async (file, callback) =>
     S3.upload(uploadParams, (error, data) => callback(error, data))
 }
 
-exports.selectInDB = async (table, filter) =>
+exports.selectInDB = async (model, filter) =>
 {
-    const db = await app.database()
+    const db = mongoose.model(`${model[0].toUpperCase()}${model.slice(1)}`)
 
-    if(Object.entries(filter).length == 0){ return db.get(table).value() }
-    if(Object.entries(filter).length == 1){ return db.get(table).filter({token: filter.token}).value() }
+    if(Object.entries(filter).length == 0){ return db.find({}) }
+    if(Object.entries(filter).length == 1){ return db.find({token: filter.token}) }
 
     let response = []
-    let token = filter.token
+    let data = await db.find(filter)
 
-    delete filter.token
     filter = Object.entries(filter)
-    table = db.get(table).filter({token: token}).value()
 
-    table.map((data) => {
+    data.map((data) => {
         let dataMatch = false
 
         filter.map((attribute) => {
@@ -77,18 +76,24 @@ exports.selectInDB = async (table, filter) =>
 
 exports.insertInDB = async (table, data) =>
 {
-    const db = await app.database()
-    db.get(table).push(data).write()
+    table = `${table[0].toUpperCase()}${table.slice(1)}`
+    let db = mongoose.model(table)
+    db = new db(data)
+    await db.save()
 }
 
-exports.updateInDB = async (table, filter, data) =>
+exports.updateInDB = async (model, filter, data) =>
 {
-    const db = await app.database()
-    db.get(table).find(filter).assign(data).write()
+    model = `${model[0].toUpperCase()}${model.slice(1)}`
+    let db = mongoose.model(model)
+    db = new db()
+    db.updateOne(filter, data)
 }
 
-exports.deleteInDB = async (table, filter) =>
+exports.deleteInDB = async (model, filter) =>
 {
-    const db = await app.database()
-    db.get(table).remove(filter).write()
+    model = `${model[0].toUpperCase()}${model.slice(1)}`
+    let db = mongoose.model(model)
+    db = new db()
+    console.log(await db.deleteOne(filter))
 }

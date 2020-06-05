@@ -7,7 +7,7 @@ require('dotenv').config()
 
 const app = express()
 
-mongoose.connect('mongodb://root:root@13.58.178.5:6000/vroom', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://root:root@13.58.178.5:6000/vroom?authSource=admin', { useNewUrlParser: true, useUnifiedTopology: true })
 mongoose.set('useFindAndModify', false)
 
 app.use(bodyParser.json({limit: `${process.env.REQUEST_LIMIT}`}))

@@ -29,6 +29,12 @@ const subscriberLog = new Schema({
     {
         type: 'String',
         required: true,
+    },
+
+    error:
+    {
+        type: 'String',
+        required: false,
     }
 });
 
