@@ -7,7 +7,7 @@ require('dotenv').config()
 
 const app = express()
 
-mongoose.connect('mongodb://root:root@13.58.178.5:6000/vroom?authSource=admin', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(`mongodb://root:root@${process.env.SUBDOMAIN_ADDRESS}:6000/vroom?authSource=admin`, { useNewUrlParser: true, useUnifiedTopology: true })
 mongoose.set('useFindAndModify', false)
 
 app.use(bodyParser.json({limit: `${process.env.REQUEST_LIMIT}`}))
@@ -25,15 +25,3 @@ app.use('/route', routerRoute)
 app.use('/webhook', webhookRoute)
 
 exports.app = app
-exports.database = async () =>
-{
-    const low = require('lowdb')
-    const FileSync = require('lowdb/adapters/FileSync')
-    
-    const adapter = new FileSync('banco.json')
-    const db = await low(adapter)
-    
-    db.defaults({ subscribers: [], subscriberLog: [], notificationLog: [], routeLog: [] }).write()
-
-    return db
-}
