@@ -86,14 +86,15 @@ exports.updateInDB = async (model, filter, data) =>
 {
     model = `${model[0].toUpperCase()}${model.slice(1)}`
     let db = mongoose.model(model)
-    db = new db()
-    db.updateOne(filter, data)
+    let register = await db.findOne(filter)
+    Object.assign(register, data)
+    register.save()
 }
 
 exports.deleteInDB = async (model, filter) =>
 {
     model = `${model[0].toUpperCase()}${model.slice(1)}`
     let db = mongoose.model(model)
-    db = new db()
-    db.deleteOne(filter)
+    let register = await db.findOne(filter)
+    register.deleteOne({ _id: register._id })
 }
