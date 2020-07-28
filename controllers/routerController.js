@@ -25,7 +25,7 @@ exports.sendToRouter = async (request, response) =>
         const ssh = new node_ssh()
          
         ssh.connect({
-            host: process.env.SUBDOMAIN_ADDRESS,
+            host: "localhost"
             port: process.env.VROOM_PORT,
             username: process.env.VROOM_SSH_USER,
             password : process.env.VROOM_SSH_PASSWORD
