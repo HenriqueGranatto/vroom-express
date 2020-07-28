@@ -36,6 +36,7 @@ exports.sendToRouter = async (request, response) =>
                 {
                     webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), message: 'It was not possible send problem to rounting'}})
                     helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_SENDED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: `${result.stderr}`})
+                    console.log(error)
                     return
                 }
                 else
@@ -76,12 +77,14 @@ exports.sendToRouter = async (request, response) =>
             }).catch((error) => {
                 webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), message: 'It was not possible send problem to rounting'}})
                 helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_SENDED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: `${error}`})
+                console.log(error)
                 return
             })
         })    
         .catch((error) => {
             webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 400, timeRequest: helper.timeRequest(), message: 'It was not possible send problem to rounting'}})
             helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_SENDED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: `${error}`})
+            console.log(error)
             return
         })    
     }
