@@ -35,12 +35,6 @@ const routeLog = new Schema({
     {
         type: 'String',
         required: false,   
-    },
-    
-    errors:
-    {
-        type: 'String',
-        required: false,   
     }
 });
 
