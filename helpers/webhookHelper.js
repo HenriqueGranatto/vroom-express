@@ -63,7 +63,7 @@ exports.sendToObserver = async (settingsToRequest) =>
             else
             {
                 axios(request).then(() => {
-                    helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED", token: settingsToRequest.token, date: (new Date).toLocaleString(), data: request})
+                    helper.insertInDB("notificationLog", JSON.stringfy({process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED", token: settingsToRequest.token, date: (new Date).toLocaleString(), data: request}))
                 })
             }
         })
