@@ -15,11 +15,6 @@ exports.verifyRequestData = (request) =>
         {
             return {status: 400, message: "More Jobs than allowed"}
         }
-    
-        if(request.jobs.length > process.env.MAX_VEHICLES)
-        {
-            return {status: 400, message: "More Vehicles than allowed"}
-        }
 
         return {status: 200}
     }
