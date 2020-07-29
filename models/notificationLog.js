@@ -31,10 +31,10 @@ const notificationLog = new Schema({
         required: false
     },
 
-    data:
+    data: 
     {
-        any: {},
-        required: true,   
+        type: String,
+        required: false
     }
 });
 
