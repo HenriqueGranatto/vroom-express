@@ -31,10 +31,10 @@ const routeLog = new Schema({
         required: false
     },
 
-    data:
+    data: 
     {
-        any: {},
-        required: false,   
+        type: String,
+        required: false
     }
 });
 
