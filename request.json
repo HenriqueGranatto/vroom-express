@@ -7159,10 +7159,6 @@
 {"id":7127, "service": 5, "location": [-29.7082785,-53.7757114], "skills": [14], "time_windows": [[0,14440]]},
 {"id":7128, "service": 5, "location": [-29.6919975,-53.7921012], "skills": [14], "time_windows": [[0,14440]]},
 {"id":7129, "service": 5, "location": [-29.6919975,-53.7921012], "skills": [14], "time_windows": [[0,14440]]},
-{"id":7130, "service": 5, "location": [-29.1652266,-54.8809391], "skills": [14], "time_windows": [[0,14440]]},
-    {
-      
-}
-
+{"id":7130, "service": 5, "location": [-29.1652266,-54.8809391], "skills": [14], "time_windows": [[0,14440]]}
   ]
 }
