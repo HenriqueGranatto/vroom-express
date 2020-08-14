@@ -30,7 +30,7 @@
     {"id": 28, "start": [-29.707148, -53.742543], "end": [-29.707148, -53.742543], "capacity": [10000], "skills": [2,14], "time_window": [0,34440]},
     {"id": 29, "start": [-29.707148, -53.742543], "end": [-29.707148, -53.742543], "capacity": [10000], "skills": [2,14], "time_window": [0,34440]},
     {"id": 30, "start": [-29.707148, -53.742543], "end": [-29.707148, -53.742543], "capacity": [10000], "skills": [2,14], "time_window": [0,34440]},
-    {"id": 31, "start": [-29.707148, -53.742543], "end": [-29.707148, -53.742543], "capacity": [10000], "skills": [2,14], "time_window": [0,34440]},
+    {"id": 31, "start": [-29.707148, -53.742543], "end": [-29.707148, -53.742543], "capacity": [10000], "skills": [2,14], "time_window": [0,34440]}
   ],
   "jobs": [
     {"id":1, "service": 5, "location": [-29.6817654,-53.8762244], "skills": [14], "time_windows": [[0,14440]]},
@@ -4166,8 +4166,6 @@
 {"id":4132, "service": 5, "location": [-29.7184313,-53.8122172], "skills": [14], "time_windows": [[0,14440]]},
 {"id":4133, "service": 5, "location": [-29.7187993,-53.8139827], "skills": [14], "time_windows": [[0,14440]]},
 {"id":4134, "service": 5, "location": [-29.7184342,-53.8123691], "skills": [14], "time_windows": [[0,14440]]},
-{"id":4135, "service": 5, "location": [Latitude:,Longitude:], "skills": [14], "time_windows": [[0,14440]]},
-{"id":4136, "service": 5, "location": [Latitude:,Longitude:], "skills": [14], "time_windows": [[0,14440]]},
 {"id":4137, "service": 5, "location": [-29.9978635,-53.4979341], "skills": [14], "time_windows": [[0,14440]]},
 {"id":4138, "service": 5, "location": [-29.6740828,-53.8184045], "skills": [14], "time_windows": [[0,14440]]},
 {"id":4139, "service": 5, "location": [-29.6822574,-53.8116291], "skills": [14], "time_windows": [[0,14440]]},
