@@ -18,9 +18,10 @@ exports.verifyRequestData = (request) =>
 
         return {status: 200}
     }
-    catch(e)
+    catch(error)
     {
-        throw e
+        app.apm.captureError(error)
+        throw error
     }
 }
 
@@ -46,8 +47,9 @@ exports.createrouterCommand = (request) =>
         
         return routerCommand
     }
-    catch(e)
+    catch(error)
     {
-        throw e
+        app.apm.captureError(error)
+        throw error
     }
 }

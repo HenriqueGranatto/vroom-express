@@ -6,7 +6,6 @@ const routerHelper = require('../helpers/routerHelper')
 
 exports.sendTorouter = async (request, response, next) =>
 {
-    console.log(`Received at ${(new Date()).toLocaleString()}`)
     process.env.REQUEST_START = Date.now()
 
     try
@@ -21,10 +20,11 @@ exports.sendTorouter = async (request, response, next) =>
 
         next()
     }
-    catch(e)
+    catch(error)
     {
+        app.apm.captureError(error)
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Cannot possible process the request"})
-        helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_RECEIVED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: e})
+        helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "PROBLEM_RECEIVED_ERROR", token: request.params.token, date: (new Date).toLocaleString(), errors: error})
         return
     }
 }
@@ -45,8 +45,9 @@ exports.selectRoutingProcessLog = async (request, response, next) =>
 
         next()
     }
-    catch(e)
+    catch(error)
     {
+        app.apm.captureError(error)
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Cannot possible process the request"})
         return
     }

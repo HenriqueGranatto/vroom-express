@@ -19,9 +19,10 @@ exports.verifyIfWebhookExists = async (webhookData) =>
 
         return {status: 400}
     }
-    catch(e)
+    catch(error)
     {
-        throw e
+        app.apm.captureError(error)
+        throw error
     }
 }
 
@@ -36,9 +37,10 @@ exports.verifyIfEventExists = (event) =>
         
         return {status: 200}
     }
-    catch(e)
+    catch(error)
     {
-        throw e
+        app.apm.captureError(error)
+        throw error
     }
 }
 
@@ -58,19 +60,24 @@ exports.sendToObserver = async (settingsToRequest) =>
                 axios(request).then(() => {
                     delete request.data.data
                     helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED", token: settingsToRequest.token, date: (new Date).toLocaleString(), data: request})
+                }).catch((error) => {
+                    app.apm.captureError(error)
                 })
             }
             else
             {
                 axios(request).then(() => {
                     helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED", token: settingsToRequest.token, date: (new Date).toLocaleString(), data: request})
+                }).catch((error) => {
+                    app.apm.captureError(error)
                 })
             }
         })
     }
-    catch(e)
+    catch(error)
     {
-        helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED_ERROR", token: settingsToRequest.token, date: (new Date).toLocaleString(), error: e})
-        throw e
+        app.apm.captureError(error)
+        helper.insertInDB("notificationLog", {process: process.env.REQUEST_START, event: "NOTIFICATION_SENDED_ERROR", token: settingsToRequest.token, date: (new Date).toLocaleString(), error: error})
+        throw error
     }
 }

@@ -21,10 +21,11 @@ exports.select = async (request, response, next) =>
 
         next()
     }
-    catch(e)
+    catch(error)
     {
+        app.apm.captureError(error)
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Cannot possible process the request"})
-        await helper.insertInDB("subscriberLog", {event: "SELECT_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
+        await helper.insertInDB("subscriberLog", {event: "SELECT_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: error})
         return
     }
 }
@@ -70,10 +71,11 @@ exports.insert = async (request, response, next) =>
 
         next()
     }
-    catch(e)
+    catch(error)
     {
+        app.apm.captureError(error)
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Cannot possible process the request"})
-        await helper.insertInDB("subscriberLog", {event: "INSERT_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
+        await helper.insertInDB("subscriberLog", {event: "INSERT_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: error})
         return
     }
 }
@@ -87,7 +89,6 @@ exports.update = async (request, response, next) =>
         const verifyRequestBodyData = helper.verifyRequestData(request.body, ["event"])
         const verifyRequestParamsData = helper.verifyRequestData(request.params, ["token"])
         const verifyIfWebhookExists = await webhookHelper.verifyIfWebhookExists({token: request.params.token, event: request.body.event})
-
 
         if(verifyRequestParamsData.status == 400)
         {
@@ -112,10 +113,11 @@ exports.update = async (request, response, next) =>
 
         next()
     }
-    catch(e)
+    catch(error)
     {
+        app.apm.captureError(error)
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Cannot possible process the request"})
-        await helper.insertInDB("subscriberLog", {event: "UPDATE_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
+        await helper.insertInDB("subscriberLog", {event: "UPDATE_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: error})
         return
     }
 }
@@ -153,10 +155,11 @@ exports.delete = async (request, response, next) =>
 
         next()
     }
-    catch(e)
+    catch(error)
     {
+        app.apm.captureError(error)
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Cannot possible process the request"})
-        await helper.insertInDB("subscriberLog", {event: "DELETE_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: e})
+        await helper.insertInDB("subscriberLog", {event: "DELETE_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: error})
         return
     }
 }

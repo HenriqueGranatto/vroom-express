@@ -27,74 +27,110 @@ exports.verifyRequestData = (request, filters) =>
 
         return {status: 200, errors: errors}
     }
-    catch(e)
+    catch(error)
     {
-        throw e
+        app.apm.captureError(error)
+        throw error
     }
 } 
 
 exports.saveInS3 = async (file, callback) =>
 {   
-    AWS.config.update({region: 'sa-east-1', credentials: {accessKeyId: `${process.env.AWS_S3_ACCESS_KEY}`, secretAccessKey: `${process.env.AWS_S3_SECRET_KEY}`}})
-    const S3 = new AWS.S3({apiVersion: '2006-03-01'})
-    const uploadParams = {Bucket: `gohusky`, Key: `${process.env.REQUEST_START}`, Body: file}
-
-    S3.upload(uploadParams, (error, data) => callback(error, data))
+    try 
+    {
+        AWS.config.update({region: 'sa-east-1', credentials: {accessKeyId: `${process.env.AWS_S3_ACCESS_KEY}`, secretAccessKey: `${process.env.AWS_S3_SECRET_KEY}`}})
+        const S3 = new AWS.S3({apiVersion: '2006-03-01'})
+        const uploadParams = {Bucket: `gohusky`, Key: `${process.env.REQUEST_START}`, Body: file}
+    
+        S3.upload(uploadParams, (error, data) => callback(error, data))   
+    } 
+    catch (error) 
+    {
+        app.apm.captureError(error)
+    }
 }
 
 exports.selectInDB = async (model, filter) =>
 {
-    const db = mongoose.model(`${model[0].toUpperCase()}${model.slice(1)}`)
+    try 
+    {
+        const db = mongoose.model(`${model[0].toUpperCase()}${model.slice(1)}`)
 
-    if(Object.entries(filter).length == 0){ return db.find({}) }
-    if(Object.entries(filter).length == 1){ return db.find({token: filter.token}) }
-
-    let response = []
-    let data = await db.find(filter)
-
-    filter = Object.entries(filter)
-
-    data.map((data) => {
-        let dataMatch = false
-
-        filter.map((attribute) => {
-            if(Array.isArray(attribute[1]) == true)
-            {
-                dataMatch = (attribute[1].indexOf(data[attribute[0]]) > -1) ? true : false
-            }
-            else
-            {
-                dataMatch = (data[attribute[0]] == attribute[1]) ? true : false
-            }
+        if(Object.entries(filter).length == 0){ return db.find({}) }
+        if(Object.entries(filter).length == 1){ return db.find({token: filter.token}) }
+    
+        let response = []
+        let data = await db.find(filter)
+    
+        filter = Object.entries(filter)
+    
+        data.map((data) => {
+            let dataMatch = false
+    
+            filter.map((attribute) => {
+                if(Array.isArray(attribute[1]) == true)
+                {
+                    dataMatch = (attribute[1].indexOf(data[attribute[0]]) > -1) ? true : false
+                }
+                else
+                {
+                    dataMatch = (data[attribute[0]] == attribute[1]) ? true : false
+                }
+            })
+    
+            if(dataMatch == true) { response.push(data) }
         })
-
-        if(dataMatch == true) { response.push(data) }
-    })
-
-    return response
+    
+        return response   
+    } 
+    catch (error) 
+    {
+        app.apm.captureError(error)
+    }
 }
 
 exports.insertInDB = async (table, data) =>
 {
-    table = `${table[0].toUpperCase()}${table.slice(1)}`
-    let db = mongoose.model(table)
-    db = new db(data)
-    await db.save()
+    try 
+    {
+        table = `${table[0].toUpperCase()}${table.slice(1)}`
+        let db = mongoose.model(table)
+        db = new db(data)
+        await db.save()   
+    } 
+    catch (error) 
+    {
+        app.apm.captureError(error)
+    }
 }
 
 exports.updateInDB = async (model, filter, data) =>
 {
-    model = `${model[0].toUpperCase()}${model.slice(1)}`
-    let db = mongoose.model(model)
-    let register = await db.findOne(filter)
-    Object.assign(register, data)
-    register.save()
+    try 
+    {
+        model = `${model[0].toUpperCase()}${model.slice(1)}`
+        let db = mongoose.model(model)
+        let register = await db.findOne(filter)
+        Object.assign(register, data)
+        register.save()   
+    } 
+    catch (error) 
+    {
+        app.apm.captureError(error)
+    }
 }
 
 exports.deleteInDB = async (model, filter) =>
 {
-    model = `${model[0].toUpperCase()}${model.slice(1)}`
-    let db = mongoose.model(model)
-    let register = await db.findOne(filter)
-    register.deleteOne({ _id: register._id })
+    try 
+    {
+        model = `${model[0].toUpperCase()}${model.slice(1)}`
+        let db = mongoose.model(model)
+        let register = await db.findOne(filter)
+        register.deleteOne({ _id: register._id })   
+    } 
+    catch (error) 
+    {
+        app.apm.captureError(error)
+    }
 }
