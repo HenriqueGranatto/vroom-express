@@ -2,6 +2,7 @@
 
 const express = require('express')
 const mongoose = require('mongoose')
+const apm = require('elastic-apm-node')
 const bodyParser = require('body-parser')
 require('dotenv').config()
 
@@ -24,4 +25,12 @@ const webhookRoute = require('./routes/webhookRoute')
 app.use('/route', routerRoute)
 app.use('/webhook', webhookRoute)
 
+/** APM Agent */
+apm.start({
+    serviceName: 'vroom',
+    secretToken: `${process.env.APM_TOKEN}`,
+    serverUrl: `${process.env.APM_HOST}`
+})
+
 exports.app = app
+exports.apm = apm;
