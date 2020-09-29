@@ -1,6 +1,7 @@
 {
+  "name": "vrrom-express",
   "version": "1.0.0",
-  "name": "router-express",
+  "private": true,
   "author": "Henrique Granatto",
   "keywords": [
     "router",
@@ -13,7 +14,7 @@
     "url": "https://github.com/HenriqueGranatto/router-express"
   },
   "scripts": {
-    "start": "node bin/server.js"
+    "start": "node bin/server"
   },
   "dependencies": {
     "aws-sdk": "^2.619.0",
