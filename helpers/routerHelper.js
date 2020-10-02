@@ -2,6 +2,7 @@
 
 require('dotenv').config()
 
+/** VALIDA OS DADOS ENVIADOS NA REQUEST COM BASE EM UM FILTRO DO QUE DEVE SER VALIDADO */
 exports.verifyRequestData = (request) => 
 {
     try
@@ -25,6 +26,7 @@ exports.verifyRequestData = (request) =>
     }
 }
 
+/** MONTA O COMANDO QUE SERÁ EXECUTADO NO VROOM */
 exports.createrouterCommand = (request) =>
 {
     try

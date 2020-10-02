@@ -1,12 +1,15 @@
 'use strict'
 
+// IMPORTANDO OS MÓDULOS NECESSÁRIOS
 require('dotenv').config()
 const app = require('../app')
 const AWS = require('aws-sdk')
 const mongoose = require('mongoose')
 
+/** CALCULA O TEMPO DE RESPOSTA DA REQUEST */
 exports.timeRequest = () => parseFloat((Date.now() - process.env.REQUEST_START) / 1000).toFixed(2)
 
+/** VALIDA OS DADOS ENVIADOS NA REQUEST COM BASE EM UM FILTRO DO QUE DEVE SER VALIDADO */
 exports.verifyRequestData = (request, filters) => 
 {
     try
@@ -34,6 +37,7 @@ exports.verifyRequestData = (request, filters) =>
     }
 } 
 
+/** SALVA ALGUM ARQUIVO NO S3 */
 exports.saveInS3 = async (file, callback) =>
 {   
     try 
@@ -50,6 +54,7 @@ exports.saveInS3 = async (file, callback) =>
     }
 }
 
+/** BUSCA ALGUMA INFORMAÇÃO NO BANCO DE DADOS */
 exports.selectInDB = async (model, filter) =>
 {
     try 
@@ -89,6 +94,7 @@ exports.selectInDB = async (model, filter) =>
     }
 }
 
+/** INSERE ALGUMA INFORMAÇÃO NO BANCO DE DADOS */
 exports.insertInDB = async (table, data) =>
 {
     try 
@@ -104,6 +110,7 @@ exports.insertInDB = async (table, data) =>
     }
 }
 
+/** ATUALIZA ALGUMA INFORMAÇÃO NO BANCO DE DADOS */
 exports.updateInDB = async (model, filter, data) =>
 {
     try 
@@ -120,6 +127,7 @@ exports.updateInDB = async (model, filter, data) =>
     }
 }
 
+/** DELETA ALGUMA INFORMAÇÃO NO BANCO DE DADOS */
 exports.deleteInDB = async (model, filter) =>
 {
     try 

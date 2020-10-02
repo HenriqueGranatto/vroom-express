@@ -1,5 +1,6 @@
 'use strict'
 
+// IMPORTANDO OS MÓDULOS NECESSÁRIOS
 require('dotenv').config()
 const axios = require('axios').default
 const helper = require('../helpers/helper')
