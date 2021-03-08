@@ -12,7 +12,6 @@ exports.select = async (request, response) =>
     }
     catch(error)
     {
-        app.apm.captureError(error)
         response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), message: "Cannot possible process the request"})
         await helper.insertInDB("subscriberLog", {event: "SELECT_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: error})
         return
@@ -37,7 +36,6 @@ exports.insert = async (request, response) =>
     }
     catch(error)
     {
-        app.apm.captureError(error)
         response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), message: "Cannot possible process the request"})
         await helper.insertInDB("subscriberLog", {event: "INSERT_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: error})
         return
@@ -54,7 +52,6 @@ exports.update = async (request, response) =>
     }
     catch(error)
     {
-        app.apm.captureError(error)
         response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), message: "Cannot possible process the request"})
         await helper.insertInDB("subscriberLog", {event: "UPDATE_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: JSON.stringify(request.body), error: error.message})
         return
@@ -72,7 +69,6 @@ exports.delete = async (request, response) =>
     }
     catch(error)
     {
-        app.apm.captureError(error)
         response.status(400).send({status: 400, timeRequest: await helper.timeRequest(), message: "Cannot possible process the request"})
         await helper.insertInDB("subscriberLog", {event: "DELETE_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: JSON.stringify(request.body), error: error.toString()})
         return

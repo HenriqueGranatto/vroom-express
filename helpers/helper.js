@@ -32,7 +32,6 @@ exports.verifyRequestData = (request, filters) =>
     }
     catch(error)
     {
-        app.apm.captureError(error)
         throw error
     }
 } 
@@ -50,7 +49,6 @@ exports.saveInS3 = async (file, callback) =>
     } 
     catch (error) 
     {
-        app.apm.captureError(error)
     }
 }
 
@@ -90,7 +88,6 @@ exports.selectInDB = async (model, filter) =>
     } 
     catch (error) 
     {
-        app.apm.captureError(error)
     }
 }
 
@@ -106,7 +103,6 @@ exports.insertInDB = async (table, data) =>
     } 
     catch (error) 
     {
-        app.apm.captureError(error)
     }
 }
 
@@ -123,7 +119,6 @@ exports.updateInDB = async (model, filter, data) =>
     } 
     catch (error) 
     {
-        app.apm.captureError(error)
     }
 }
 
@@ -139,6 +134,5 @@ exports.deleteInDB = async (model, filter) =>
     } 
     catch (error) 
     {
-        app.apm.captureError(error)
     }
 }

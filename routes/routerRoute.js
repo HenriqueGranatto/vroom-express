@@ -8,6 +8,7 @@ const routerMiddleware = require('../middlewares/routerMiddleware')
 
 /** ROTAS DA ROTEIRIZAÇÃO */
 route.post('/:token', routerMiddleware.sendTorouter, routerController.sendToRouter)
+route.post('/sync/:token', routerMiddleware.sendTorouter, routerController.sendToRouterSync)
 route.get('/log/:token', routerMiddleware.selectRoutingProcessLog, routerController.selectRoutingProcessLog)
 
 module.exports = route

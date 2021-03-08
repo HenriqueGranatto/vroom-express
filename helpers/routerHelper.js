@@ -21,7 +21,6 @@ exports.verifyRequestData = (request) =>
     }
     catch(error)
     {
-        app.apm.captureError(error)
         throw error
     }
 }
@@ -51,7 +50,6 @@ exports.createrouterCommand = (request) =>
     }
     catch(error)
     {
-        app.apm.captureError(error)
         throw error
     }
 }

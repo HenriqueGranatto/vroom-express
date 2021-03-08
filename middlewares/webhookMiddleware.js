@@ -27,8 +27,6 @@ exports.select = async (request, response, next) =>
     }
     catch(error)
     {
-        /** ENVIA UM LOG PARA O APM DO ELASTIC E RETORNA ERRO */
-        app.apm.captureError(error)
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Cannot possible process the request"})
         await helper.insertInDB("subscriberLog", {event: "SELECT_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: error})
         return
@@ -84,8 +82,6 @@ exports.insert = async (request, response, next) =>
     }
     catch(error)
     {
-        /** ENVIA UM LOG PARA O APM DO ELASTIC E RETORNA ERRO */
-        app.apm.captureError(error)
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Cannot possible process the request"})
         await helper.insertInDB("subscriberLog", {event: "INSERT_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: error})
         return
@@ -132,8 +128,6 @@ exports.update = async (request, response, next) =>
     }
     catch(error)
     {
-        /** ENVIA UM LOG PARA O APM DO ELASTIC E RETORNA ERRO */
-        app.apm.captureError(error)
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Cannot possible process the request"})
         await helper.insertInDB("subscriberLog", {event: "UPDATE_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: error})
         return
@@ -180,8 +174,6 @@ exports.delete = async (request, response, next) =>
     }
     catch(error)
     {
-        /** ENVIA UM LOG PARA O APM DO ELASTIC E RETORNA ERRO */
-        app.apm.captureError(error)
         response.status(400).send({status: 400, timeRequest: helper.timeRequest(), message: "Cannot possible process the request"})
         await helper.insertInDB("subscriberLog", {event: "DELETE_SUBSCRIBER_ERROR", token: request.params.token, date: (new Date).toLocaleString(), request: request.body, errors: error})
         return
