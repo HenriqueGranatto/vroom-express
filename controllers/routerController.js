@@ -61,7 +61,7 @@ exports.sendToRouter = async (request, response) =>
                             }
                             else
                             {
-                                webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 200, timeRequest: helper.timeRequest(), message: `Problem successfully routed`, data: JSON.stringify(JSON.parse(`${solution}`)), dataLink: data.Location}})
+                                webhookHelper.sendToObserver({token: request.params.token, event: ["all", "route"], data: {status: 200, timeRequest: helper.timeRequest(), message: `Problem successfully routed`, metadata: request.body.metadata, data: JSON.stringify(JSON.parse(`${solution}`)), dataLink: data.Location}})
                                 helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "SOLUTION_SENDED", token: request.params.token, date: (new Date).toLocaleString(), data: data.Location})
                                 return
                             }
@@ -147,7 +147,7 @@ exports.sendToRouterSync = async (request, response) =>
                             }
                             else
                             {
-                                response.status(200).send({status: 200, timeRequest: helper.timeRequest(), message: `Problem successfully routed`, data: JSON.stringify(JSON.parse(`${solution}`)), dataLink: data.Location})
+                                response.status(200).send({status: 200, timeRequest: helper.timeRequest(), message: `Problem successfully routed`, metadata: request.body.metadata, data: JSON.stringify(JSON.parse(`${solution}`)), dataLink: data.Location})
                                 helper.insertInDB("routeLog", {process: process.env.REQUEST_START, event: "SOLUTION_SENDED", token: request.params.token, date: (new Date).toLocaleString(), data: data.Location})
                                 return
                             }

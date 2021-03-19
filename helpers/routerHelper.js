@@ -17,6 +17,11 @@ exports.verifyRequestData = (request) =>
             return {status: 400, message: "More Jobs than allowed"}
         }
 
+        if(!request.metadata)
+        {
+            return {status: 400, message: "Field metadata is required"}
+        }
+
         return {status: 200}
     }
     catch(error)
