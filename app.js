@@ -10,7 +10,7 @@ require('dotenv').config()
 const app = express()
 
 /** CONECTANDO API AO MONGO PARA SALVAR LOGS */
-mongoose.connect(`mongodb://root:root@${process.env.SUBDOMAIN_ADDRESS}:6000?authSource=admin`, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(`mongodb://root:root@vroom.gohusky.net:6000`, { useNewUrlParser: true, useUnifiedTopology: true })
 mongoose.set('useFindAndModify', false)
 
 app.use(bodyParser.json({limit: `${process.env.REQUEST_LIMIT}`}))
