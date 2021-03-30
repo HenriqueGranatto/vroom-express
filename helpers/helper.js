@@ -99,7 +99,7 @@ exports.insertInDB = async (table, data) =>
         table = `${table[0].toUpperCase()}${table.slice(1)}`
         let db = mongoose.model(table)
         db = new db(data)
-        await db.save()   
+        console.log(await db.save())   
     } 
     catch (error) 
     {
