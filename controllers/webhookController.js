@@ -22,7 +22,7 @@ exports.insert = async (request, response) =>
 {
     try
     {        
-        await helper.insertInDB("subscribers", {
+        console.log(await helper.insertInDB("subscribers", {
             token: request.params.token.toString(), 
             event: request.body.event || "all",
             url: request.body.url, 
@@ -30,7 +30,7 @@ exports.insert = async (request, response) =>
             auth: request.body.auth || null,
             created: (new Date).toLocaleString(),
             deleted: false,
-        })
+        }))
 
         response.status(200).send({status:200, timeRequest: await helper.timeRequest(), message: "Notification URL saved with success"})
     }
