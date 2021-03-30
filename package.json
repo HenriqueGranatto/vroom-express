@@ -14,7 +14,8 @@
     "url": "https://github.com/HenriqueGranatto/router-express"
   },
   "scripts": {
-    "start": "node bin/server"
+    "start": "node bin/server",
+    "dev": "nodemon bin/server"
   },
   "dependencies": {
     "aws-sdk": "^2.619.0",

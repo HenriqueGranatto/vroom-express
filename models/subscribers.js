@@ -33,14 +33,13 @@ const subscribers = new Schema({
     auth:
     {
         type: 'String',
-        required: true,   
+        required: false,   
     },
 
     
     created:
     {
-        type: 'Date',
-        default: '9999/01/01',
+        type: 'String',
         required: false
     },
 

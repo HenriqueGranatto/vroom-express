@@ -20,8 +20,7 @@ const subscriberLog = new Schema({
 
     date:
     {
-        type: 'Date',
-        default: '9999/01/01',
+        type: 'String',
         required: false
     },
 

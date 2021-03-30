@@ -99,7 +99,7 @@ exports.insertInDB = async (table, data) =>
         table = `${table[0].toUpperCase()}${table.slice(1)}`
         let db = mongoose.model(table)
         db = new db(data)
-        return await db.save()   
+        await db.save()
     } 
     catch (error) 
     {
@@ -115,7 +115,7 @@ exports.updateInDB = async (model, filter, data) =>
         let db = mongoose.model(model)
         let register = await db.findOne(filter)
         Object.assign(register, data)
-        register.save()   
+        await register.save()   
     } 
     catch (error) 
     {
@@ -130,7 +130,7 @@ exports.deleteInDB = async (model, filter) =>
         model = `${model[0].toUpperCase()}${model.slice(1)}`
         let db = mongoose.model(model)
         let register = await db.findOne(filter)
-        register.deleteOne({ _id: register._id })   
+        await register.deleteOne({ _id: register._id })   
     } 
     catch (error) 
     {
