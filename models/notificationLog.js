@@ -26,7 +26,7 @@ const notificationLog = new Schema({
 
     date:
     {
-        type: 'String',
+        type: 'Date',
         required: false
     },
 

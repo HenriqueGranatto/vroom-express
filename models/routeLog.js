@@ -26,7 +26,7 @@ const routeLog = new Schema({
 
     date:
     {
-        type: 'String',
+        type: 'Date',
         required: false
     },
 

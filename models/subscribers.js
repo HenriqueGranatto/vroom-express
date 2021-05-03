@@ -39,7 +39,7 @@ const subscribers = new Schema({
     
     created:
     {
-        type: 'String',
+        type: 'Date',
         required: false
     },
 
